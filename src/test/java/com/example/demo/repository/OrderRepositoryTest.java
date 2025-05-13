@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ public class OrderRepositoryTest {
 
 	@Test
 	void 오더등록() {
-		Member member = repository2.findById(1).get();
-		System.out.println(member);
+		Optional<Member> member = repository2.findById(1);
+		System.out.println(member.get());
 		LocalDateTime dateTime = LocalDateTime.now();
-		Order order = Order.builder().memberNo(member).totalCount(3).totalPrice(3).orderDate(dateTime)
+		Order order = Order.builder().memberNo(member.get()).totalCount(3).totalPrice(3).orderDate(dateTime)
 				.status(Status.Before).build();
 		repository.save(order);
 

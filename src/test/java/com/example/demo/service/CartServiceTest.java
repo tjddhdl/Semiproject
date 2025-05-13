@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,5 +25,23 @@ public class CartServiceTest {
 	void 앍앍() {
 		CartDTO dto = service.cartLookUp(1);
 		System.out.println(dto);
+	}
+
+	@Test
+	void 목록선택() {
+		List<Integer> list = new ArrayList<>();
+		list.add(1);
+
+		List<CartDTO> dtos = service.cartSelect(list);
+		System.out.println("목록: " + dtos);
+	}
+
+	@Test
+	void 목록제거() {
+		List<Integer> list = new ArrayList<>();
+		list.add(3);
+		list.add(4);
+
+		service.cartClearByIdList(list);
 	}
 }

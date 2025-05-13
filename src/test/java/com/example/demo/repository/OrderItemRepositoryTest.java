@@ -34,7 +34,11 @@ public class OrderItemRepositoryTest {
 
 	@Test
 	void 오더no로검색() {
-		List<OrderItem> list = repository.findAllByOrderItemNo(1);
-		System.out.println("리스트목록: " + list);
+		Order order = new Order();
+		order.setOrderNo(1);
+		List<OrderItem> list = repository.findByOrderNo(order);
+		for (OrderItem item : list) {
+			System.out.println("목록: " + item);
+		}
 	}
 }
