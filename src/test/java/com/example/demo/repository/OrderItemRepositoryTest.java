@@ -26,8 +26,7 @@ public class OrderItemRepositoryTest {
 	void 오더아이템추가() {
 		Order order = repository2.findById(1).get();
 		Title title = repository3.findById(1).get();
-		OrderItem item = OrderItem.builder().orderNo(order.getOrderNo()).tNo(title.getTNo()).count(3)
-				.price(title.getPrice() * 3).build();
+		OrderItem item = OrderItem.builder().orderNo(order).tNo(title).count(3).price(title.getPrice() * 3).build();
 
 		System.out.println("아이템: " + item);
 		repository.save(item);

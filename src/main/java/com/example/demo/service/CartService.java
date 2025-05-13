@@ -4,23 +4,31 @@ import java.util.List;
 
 import com.example.demo.dto.CartDTO;
 import com.example.demo.entity.Cart;
+import com.example.demo.entity.Member;
+import com.example.demo.entity.Title;
 
 public interface CartService {
 
 	default Cart dtoToEntity(CartDTO dto) {
-		Cart cart = Cart.builder().memberNo(dto.getMemberNo()).tNo(dto.getTNo()).count(dto.getCount())
-				.price(dto.getPrice()).build();
+
+		Member member = new Member();
+		member.setMemberNo(dto.getMemberNo());
+
+		Title title = new Title();
+		title.setTNo(dto.getTNo());
+
+		Cart cart = Cart.builder().memberNo(member).tNo(title).count(dto.getCount()).price(dto.getPrice()).build();
 		return cart;
 	}
 
 	default CartDTO entityToDTO(Cart cart) {
-		CartDTO dto = CartDTO.builder().cartNo(cart.getCartNo()).memberNo(cart.getMemberNo()).tNo(cart.getTNo())
-				.cartNo(cart.getCartNo()).price(cart.getCartNo()).build();
+		CartDTO dto = CartDTO.builder().cartNo(cart.getCartNo()).memberNo(cart.getMemberNo().getMemberNo())
+				.tNo(cart.getTNo().getTNo()).count(cart.getCount()).price(cart.getCartNo()).build();
 		return dto;
 	}
 
 	// 장바구니에 상품 추가
-	void cartAdd(int memberNo, int tNo, int count, int price);
+	void cartAdd(CartDTO dto);
 
 	// 장바구니 조회
 	CartDTO cartLookUp(int no);

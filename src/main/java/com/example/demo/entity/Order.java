@@ -36,7 +36,7 @@ public class Order {
 
 	@ManyToOne
 	@JoinColumn(name = "member_no")
-	int memberNo;
+	Member memberNo;
 
 	@Column(nullable = false)
 	int totalCount;

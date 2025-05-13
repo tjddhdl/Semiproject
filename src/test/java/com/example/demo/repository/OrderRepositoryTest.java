@@ -24,7 +24,7 @@ public class OrderRepositoryTest {
 		Member member = repository2.findById(1).get();
 		System.out.println(member);
 		LocalDateTime dateTime = LocalDateTime.now();
-		Order order = Order.builder().memberNo(member.getMemberNo()).totalCount(3).totalPrice(3).orderDate(dateTime)
+		Order order = Order.builder().memberNo(member).totalCount(3).totalPrice(3).orderDate(dateTime)
 				.status(Status.Before).build();
 		repository.save(order);
 

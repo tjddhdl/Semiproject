@@ -27,8 +27,7 @@ public class CartRepositoryTest {
 		Optional<Member> member = memberRepository.findById(1);
 		Optional<Title> title = titleRepository.findById(1);
 
-		Cart cart = Cart.builder().memberNo(member.get().getMemberNo()).tNo(title.get().getTNo()).count(3).price(3000)
-				.build();
+		Cart cart = Cart.builder().memberNo(member.get()).tNo(title.get()).count(3).price(3000).build();
 
 		repository.save(cart);
 	}

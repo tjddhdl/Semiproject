@@ -19,8 +19,9 @@ public class CartServiceImpl implements CartService {
 
 	// 장바구니에 상품 추가
 	@Override
-	public void cartAdd(int memberNo, int tNo, int count, int price) {
-		Cart cart = Cart.builder().memberNo(memberNo).tNo(tNo).count(count).price(price).build();
+	public void cartAdd(CartDTO dto) {
+
+		Cart cart = dtoToEntity(dto);
 		cartRepository.save(cart);
 	}
 

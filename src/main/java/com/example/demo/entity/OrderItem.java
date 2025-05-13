@@ -31,11 +31,11 @@ public class OrderItem {
 
 	@ManyToOne
 	@JoinColumn(name = "order_no")
-	int orderNo;
+	Order orderNo;
 
 	@ManyToOne
 	@JoinColumn(name = "t_no")
-	int tNo;
+	Title tNo;
 
 	@Column(nullable = false)
 	int count;

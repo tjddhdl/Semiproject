@@ -31,11 +31,11 @@ public class Cart {
 
 	@ManyToOne
 	@JoinColumn(name = "member_no")
-	int memberNo;
+	Member memberNo;
 
 	@ManyToOne
 	@JoinColumn(name = "t_no")
-	int tNo;
+	Title tNo;
 
 	@Column(nullable = false)
 	int count;
