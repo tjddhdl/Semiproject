@@ -41,4 +41,12 @@ public class OrderItemRepositoryTest {
 			System.out.println("목록: " + item);
 		}
 	}
+
+	@Test
+	void 오더no로삭제() {
+		Order order = new Order();
+		order.setOrderNo(1);
+		repository.deleteAllByOrderNo(1);
+
+	}
 }

@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import com.example.demo.dto.OrderItemDTO;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderItem;
@@ -26,6 +28,9 @@ public interface OrderItemService {
 
 	// 주문상세 추가
 	void orderItemAdd(OrderItemDTO dto);
+
+	// 주문번호로 주문상세목록 조회
+	List<OrderItemDTO> orderItemLookUp(int orderNo);
 
 	// 주문상세 삭제(주문번호기반 일괄삭제)
 	void orderItemDelete(int orderNo);
