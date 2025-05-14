@@ -36,12 +36,4 @@ public class CartServiceTest {
 		System.out.println("목록: " + dtos);
 	}
 
-	@Test
-	void 목록제거() {
-		List<Integer> list = new ArrayList<>();
-		list.add(3);
-		list.add(4);
-
-		service.cartClearByIdList(list);
-	}
 }

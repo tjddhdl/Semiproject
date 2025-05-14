@@ -23,7 +23,7 @@ public interface CartService {
 
 	default CartDTO entityToDTO(Cart cart) {
 		CartDTO dto = CartDTO.builder().cartNo(cart.getCartNo()).memberNo(cart.getMemberNo().getMemberNo())
-				.tNo(cart.getTNo().getTNo()).count(cart.getCount()).price(cart.getCartNo()).build();
+				.tNo(cart.getTNo().getTNo()).count(cart.getCount()).price(cart.getPrice()).build();
 		return dto;
 	}
 
@@ -37,5 +37,5 @@ public interface CartService {
 	List<CartDTO> cartSelect(List<Integer> cartNo);
 
 	// 장바구니에서 특정 상품 제거
-	void cartClearByIdList(List<Integer> cartNo);
+	void cartClearByDTOList(List<CartDTO> list);
 }

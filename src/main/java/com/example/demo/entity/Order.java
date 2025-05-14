@@ -28,7 +28,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Order extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +43,6 @@ public class Order {
 
 	@Column(nullable = false)
 	int totalPrice;
-
-	@Column(nullable = false)
-	LocalDateTime orderDate;
 
 	LocalDateTime arrivedDate;
 

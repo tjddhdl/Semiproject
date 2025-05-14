@@ -14,7 +14,7 @@ public interface OrderService {
 		member.setMemberNo(dto.getMemberNo());
 
 		Order order = Order.builder().memberNo(member).totalCount(dto.getTotalCount()).totalPrice(dto.getTotalPrice())
-				.orderDate(dto.getOrderDate()).arrivedDate(dto.getArrivedDate()).status(dto.getStatus()).build();
+				.arrivedDate(dto.getArrivedDate()).status(dto.getStatus()).build();
 		return order;
 	}
 
@@ -28,7 +28,7 @@ public interface OrderService {
 	// 주문추가
 	void orderAdd(List<CartDTO> list);
 
-	// 특정회원주문목록 조회
+	// 특정회원 주문목록 조회
 	List<OrderDTO> orderSearch(int memberNo);
 
 	// 주문 상세조회

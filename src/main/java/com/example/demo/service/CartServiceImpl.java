@@ -46,8 +46,9 @@ public class CartServiceImpl implements CartService {
 
 	// 장바구니에서 특정 상품 제거
 	@Override
-	public void cartClearByIdList(List<Integer> cartNo) {
-		cartRepository.deleteAllById(cartNo);
+	public void cartClearByDTOList(List<CartDTO> list) {
+		List<Cart> cartList = list.stream().map(dto -> dtoToEntity(dto)).collect(Collectors.toList());
+		cartRepository.deleteAll(cartList);
 	}
 
 }
