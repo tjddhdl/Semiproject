@@ -3,7 +3,7 @@ package com.example.demo.title.dto;
 import java.time.LocalDate;
 
 import com.example.demo.title.entity.Category;
-import com.example.demo.title.entity.Model;
+import com.example.demo.title.entity.ModelName;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +22,11 @@ public class TitleDTO {
 
 	int tNo;
 	String titleName;
-	Integer price;
-	Model model;
-	LocalDate releaseDate;
-	Integer stock;
-	String image;
-	Integer ageRate;
 	Category category;
+	ModelName model;
+	Integer price;
+	Integer ageRate;
+	LocalDate releaseDate;
+	String image;
+	Integer stock;
 }

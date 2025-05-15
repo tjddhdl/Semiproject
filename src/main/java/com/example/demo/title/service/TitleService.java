@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.demo.title.dto.TitleDTO;
 import com.example.demo.title.entity.Category;
-import com.example.demo.title.entity.Model;
+import com.example.demo.title.entity.ModelName;
 import com.example.demo.title.entity.Title;
 
 public interface TitleService {
@@ -26,8 +26,11 @@ public interface TitleService {
 	// 게임등록
 	void register(TitleDTO dto);
 
+	// 전체조회
+	List<TitleDTO> main();
+	
 	// 게임정보조회
-	TitleDTO lookup(int no);
+	TitleDTO lookUp(int no);
 
 	// 게임정보수정
 	void modify(TitleDTO dto);
@@ -39,5 +42,5 @@ public interface TitleService {
 	List<TitleDTO> search(String titleName);
 
 	// 타이틀 필터링 옵션
-	List<TitleDTO> filter(Model model, Category category, Integer minAge, Integer maxAge);
+	List<TitleDTO> filter(String model, String category, Integer minAge, Integer maxAge);
 }

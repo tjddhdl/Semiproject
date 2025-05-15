@@ -39,7 +39,7 @@ public class Title {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	Model model;
+	ModelName model;
 
 	LocalDate releaseDate;
 

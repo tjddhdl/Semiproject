@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:action="@{/title/modify}" method="post">
+
+		<label>타이틀번호</label> <input type="number" name="tNo"
+			th:value="${dto.getTNo}" readonly="readonly">
+		<div class="form-group">
+			<label>이름</label> <input type="text" class="form-control"
+				name="titleName" th:value="${dto.getTitleName()}">
+		</div>
+		<div>
+			<label>기종</label> <select name="model" id="model">
+				<option th:each="modelName : ${modelNames}" th:value="${modelName}"
+					th:text="${modelName}"
+					th:selected="${modelName}==${dto.getModel()}"></option>
+			</select>
+		</div>
+		<div>
+			<label>장르</label> <select name="category" id="category">
+				<option th:each="category : ${categories}" th:value="${category}"
+					th:text="${category}"
+					th:selected="${category}==${dto.getCategory()}"></option>
+			</select>
+		</div>
+		<div>
+			<label>가격</label><input type="number" name="price"
+				th:value="${dto.getPrice()}">
+		</div>
+		<div>
+			<label>연령제한</label><input type="number" name="ageRate"
+				th:value="${dto.getAgeRate()}">
+		</div>
+		<div>
+			<label>출시일</label><input type="date" name="releaseDate"
+				th:value="${dto.getReleaseDate()}">
+		</div>
+		<div>
+			<label>이미지경로</label><input type="text" name="image"
+				th:value="${dto.getImage()}">
+		</div>
+		<div>
+			<label>재고</label><input type="number" name="stock"
+				th:value="${dto.getStock()}">
+		</div>
+		<button type="submit">수정</button>
+	</form>
+</body>
+</html>

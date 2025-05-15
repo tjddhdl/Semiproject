@@ -41,13 +41,15 @@ public class CartServiceImpl implements CartService {
 			if (title.getStock() < cart.getCount()) {
 				throw new IllegalStateException("상품 재고 부족: " + title.getTitleName());
 			}
+			
 			cartRepository.save(cart);
+			
 		} else {
-
 			// 상품 재고 확인
 			if (title.getStock() < dto.getCount()) {
 				throw new IllegalStateException("상품 재고 부족: " + title.getTitleName());
 			}
+			
 			Cart cart = dtoToEntity(dto);
 			cartRepository.save(cart);
 		}

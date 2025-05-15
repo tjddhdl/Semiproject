@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.title.dto.TitleDTO;
 import com.example.demo.title.entity.Category;
-import com.example.demo.title.entity.Model;
+import com.example.demo.title.entity.ModelName;
 import com.example.demo.title.entity.Title;
 import com.example.demo.title.repository.TitleRepository;
 
@@ -26,9 +26,17 @@ public class TitleServiceImpl implements TitleService {
 		repository.save(title);
 	}
 
+	// 전체조회
+	@Override
+	public List<TitleDTO> main() {
+		List<Title> list = repository.findTitleByFilter(null, null, null, null);
+		List<TitleDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
+		return dtoList;
+	}
+
 	// 게임정보조회
 	@Override
-	public TitleDTO lookup(int no) {
+	public TitleDTO lookUp(int no) {
 		Optional<Title> optional = repository.findById(no);
 		if (optional.isPresent()) {
 			Title title = optional.get();
@@ -81,8 +89,8 @@ public class TitleServiceImpl implements TitleService {
 
 	// 타이틀 필터링 옵션
 	@Override
-	public List<TitleDTO> filter(Model model, Category category, Integer minAge, Integer maxAge) {
-		List<Title> list = repository.findTitleByFilter(model.toString(), category.toString(), minAge, maxAge);
+	public List<TitleDTO> filter(String model, String category, Integer minAge, Integer maxAge) {
+		List<Title> list = repository.findTitleByFilter(model, category, minAge, maxAge);
 		List<TitleDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
 		return dtoList;
 	}

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.title.entity.Category;
-import com.example.demo.title.entity.Model;
+import com.example.demo.title.entity.ModelName;
 import com.example.demo.title.entity.Title;
 import com.example.demo.title.repository.TitleRepository;
 
@@ -22,7 +22,7 @@ public class TitleRepositoryTest {
 	@Test
 	void 타이틀추가() {
 		LocalDate date = LocalDate.now();
-		Title title = Title.builder().titleName("13기병방위권").price(1000).model(Model.PS4).releaseDate(date).stock(10)
+		Title title = Title.builder().titleName("13기병방위권").price(1000).model(ModelName.PS4).releaseDate(date).stock(10)
 				.ageRate(18).category(Category.ADVENTURE).build();
 		repository.save(title);
 	}
