@@ -11,7 +11,7 @@ public interface TitleService {
 
 	default Title dtoToEntity(TitleDTO dto) {
 		Title title = Title.builder().titleName(dto.getTitleName()).price(dto.getPrice()).model(dto.getModel())
-				.releaseDate(dto.getReleaseDate()).stock(0).image(dto.getImage()).ageRate(dto.getAgeRate())
+				.releaseDate(dto.getReleaseDate()).stock(dto.getStock()).image(dto.getImage()).ageRate(dto.getAgeRate())
 				.category(dto.getCategory()).build();
 		return title;
 	}

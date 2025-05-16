@@ -50,7 +50,6 @@ public class TitleController {
 			category = null;
 
 		List<TitleDTO> list = service.filter(modelName, category, minAge, maxAge);
-		System.out.println(list);
 		model.addAttribute("list", list);
 	}
 
@@ -82,5 +81,29 @@ public class TitleController {
 		service.modify(dto);
 		redirectAttributes.addAttribute("no", dto.getTNo());
 		return "redirect:/title/lookUp";
+	}
+
+	// 관리자만 사용할 수 있게 작업 필요
+	// 타이틀 등록페이지
+	@GetMapping("/register")
+	public void register(Model model) {
+		model.addAttribute("modelNames", ModelName.values());
+		model.addAttribute("categories", Category.values());
+	}
+
+	// 관리자만 사용할 수 있게 작업 필요
+	// 타이틀 등록 적용
+	@PostMapping("/register")
+	public String registerPost(TitleDTO dto) {
+		service.register(dto);
+		return "redirect:/title/main";
+	}
+
+	// 관리자만 사용할 수 있게 작업 필요
+	// 상품 삭제
+	@PostMapping("/delete")
+	public String delete(TitleDTO dto) {
+		service.delete(dto.getTNo());
+		return "redirect:/title/main";
 	}
 }

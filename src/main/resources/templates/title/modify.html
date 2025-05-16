@@ -5,7 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form th:action="@{/title/modify}" method="post">
+	<form>
 
 		<label>타이틀번호</label> <input type="number" name="tNo"
 			th:value="${dto.getTNo}" readonly="readonly">
@@ -47,7 +47,35 @@
 			<label>재고</label><input type="number" name="stock"
 				th:value="${dto.getStock()}">
 		</div>
-		<button type="submit">수정</button>
 	</form>
+	<button type="button" class="modifybtn">수정</button>
+	<button type="button" class="deletebtn">삭제</button>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:inline="javascript">
+		const modifybtn = $('.modifybtn');
+		const deletebtn = $('.deletebtn');
+		
+		const form = $('form');
+		modifybtn.click(()=>{
+			if(confirm("수정하시겠습니까?")){
+				form.attr('action','/title/modify')
+				.attr('method','post')
+				.submit();
+			}else{
+				return;
+			}
+		});
+		
+		deletebtn.click(()=>{
+			if(confirm("삭제하시겠습니까?")){
+				form.attr('action','/title/delete')
+				.attr('method','post')
+				.submit();
+			}else{
+				return;
+			}
+		});
+		
+		</script>
 </body>
 </html>
