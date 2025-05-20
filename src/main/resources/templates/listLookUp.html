@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container">
+			<div class="row center">
+				<div class="col-md 7" style="max-width: 700px; margin: 0 auto;">
+					<div class="py-3 text-center">
+						<h1 style="color: #EC6090;">유저 목록</h1>
+					</div>
+					<div
+						class="col-sm-12 most-popular d-flex align-items-center justify-content-between"
+						th:each="dto : ${list}"
+						style="height: 50px; margin-top: 10px; padding: 13px">
+						<span style="color: white;">[[${dto.memberNo}]]</span> <span
+							style="color: white;">[[${dto.getId}]]</span> <span
+							style="color: white;">[[${dto.getUserName}]]</span> <span
+							style="color: white;">[[${dto.getRole}]]</span> <a
+							th:href="@{/member/modifyAdmin(no=${dto.getMemberNo})}">
+							<button class="btn btn-sm"
+								style="background-color: #EC6090; color: white; border-radius: 50px">수정</button>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</th:block>
+</html>

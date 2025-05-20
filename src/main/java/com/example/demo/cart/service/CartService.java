@@ -43,8 +43,14 @@ public interface CartService {
 	// 장바구니에 상품 추가
 	void cartAdd(CartDTO dto);
 
+	// 회원 장바구니 목록 조회
+	List<CartDTO> listLookUp(int no);
+
 	// 장바구니 조회
 	CartDTO cartLookUp(int no);
+
+	// 장바구니 (수량) 수정
+	void modify(CartDTO dto);
 
 	// 장바구니에서 특정 목록 선택
 	List<CartDTO> cartSelect(List<Integer> cartNo);

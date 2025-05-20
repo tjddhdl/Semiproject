@@ -1,5 +1,7 @@
 package com.example.demo.member.dto;
 
+import java.time.LocalDate;
+
 import com.example.demo.member.entity.Role;
 
 import lombok.AllArgsConstructor;
@@ -21,7 +23,7 @@ public class MemberDTO {
 	String id;
 	String password;
 	String userName;
-	Integer age;
+	LocalDate age;
 	Role role;
 	String address;
 }

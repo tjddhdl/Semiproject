@@ -106,4 +106,5 @@ public class TitleController {
 		service.delete(dto.getTNo());
 		return "redirect:/title/main";
 	}
+
 }

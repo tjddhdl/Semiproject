@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form>
+		<label>멤버번호</label><input type="number" name="memberNo"
+			th:value="${dto.getMemberNo}" readonly="readonly"><br> <label>아이디</label><input
+			type="text" name="id" th:value="${dto.getId}"><br> <label>비밀번호</label><input
+			type="text" name="password" th:value="${dto.getPassword}"><br>
+		<label>유저 이름</label><input type="text" name="userName"
+			th:value="${dto.getUserName}"><br> <label>나이</label><input
+			type="number" name="age" th:value="${dto.getAge}"><br> <label>주소</label><input
+			type="text" name="address" th:value="${dto.getAddress}"><br>
+		<label>권한</label><select name="role"><option
+				th:each="role : ${roles}" th:value=${role} th:text=${role}></select>
+	</form>
+	<button type="button" class="modifybtn">수정</button>
+	<button type="button" class="deletebtn">삭제</button>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script th:inline="javascript">
+	const modifybtn = $('.modifybtn');
+	const deletebtn = $('.deletebtn');
+	
+	const form = $('form');
+	modifybtn.click(()=>{
+		if(confirm('수정하시겠습니까?')){
+			form.attr('action','/member/modifyAdmin')
+			.attr('method','post')
+			.submit();
+		}else {
+			return;
+		}
+	});
+	
+	deletebtn.click(()=>{
+		if(confirm("삭제하시겠습니까?")){
+			form.attr('action','/member/delete')
+			.attr('method','post')
+			.submit();
+		}else{
+			return;
+		}
+	});
+	</script>
+
+</body>
+</html>

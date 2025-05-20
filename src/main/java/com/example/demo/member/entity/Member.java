@@ -1,5 +1,7 @@
 package com.example.demo.member.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -38,8 +40,8 @@ public class Member {
 	@Column(length = 20, nullable = false)
 	String userName;
 
-	@Column(length = 5, nullable = false)
-	int age;
+	@Column(nullable = false)
+	LocalDate age;
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)

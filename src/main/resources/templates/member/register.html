@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+
+		<div class="container">
+			<div class="row center">
+				<div class="col-md 7" style="max-width: 700px; margin: 0 auto;">
+					<div class="py-3 text-center">
+						<h1 class="mb-4" style="color: #EC6090;">회원가입</h1>
+					</div>
+					<form class="needs-validation" method="post"
+						action="/member/register">
+						<div class="col-sm-12 mb-4" id="idDiv">
+							<label for="id" class="form-label" style="color: white;">아이디</label>
+							<input type="text" class="form-control" id="id" name="id"
+								placeholder value required>
+						</div>
+						<small id="id-check" class="text-danger"></small>
+						<script type="text/javascript">
+						document.getElementById("id").addEventListener("input",function(){
+							document.getElementById("idDiv").className="col-sm-12";
+							const id = this.value;
+							if(id.length<3){
+								document.getElementById("id-check").textContent="아이디는 최소 3자 이상입니다";
+								document.getElementById("id-check").className="text-danger";
+								return;
+							}
+							
+							fetch(`/member/check-id?id=${encodeURIComponent(id)}`)
+							.then(response => response.json())
+							.then(data=>{
+								if(data.duplicate){
+									document.getElementById("id-check").className="text-danger";
+									document.getElementById("id-check").textContent="이미 사용 중인 아이디입니다";
+								}else{
+									document.getElementById("id-check").className="text-primary";
+									document.getElementById("id-check").textContent="사용 가능한 아이디입니다";
+								}
+							})
+							
+						});
+						</script>
+
+						<div class="col-sm-12 mb-4">
+							<label for="password" class="form-label" style="color: white;">비밀번호</label>
+							<input type="password" class="form-control" id="password"
+								name="password" placeholder value required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="userName" class="form-label" style="color: white;">유저
+								이름</label> <input type="text" class="form-control" id="userName"
+								name="userName" placeholder value required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="age" class="form-label" style="color: white;">생년월일</label>
+							<input type="date" class="form-control" id="age" name="age"
+								placeholder value required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="address" class="form-label" style="color: white;">주소</label>
+							<input type="text" class="form-control" id="address"
+								name="address" placeholder value required>
+						</div>
+						<select name="role" hidden>
+							<option th:each="role : ${roles}" th:value=${role}
+								th:text="${role}">
+						</select>
+
+						<hr class="my-4" style="color: white;">
+						<button class="w-100 btn btn-lg" type="submit"
+							style="background-color: #EC6090; color: white; border-radius: 100px">회원가입</button>
+					</form>
+					
+				</div>
+			</div>
+		</div>
+
+	</th:block>
+</th:block>
+</html>

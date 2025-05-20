@@ -41,21 +41,32 @@ public class CartServiceImpl implements CartService {
 			if (title.getStock() < cart.getCount()) {
 				throw new IllegalStateException("상품 재고 부족: " + title.getTitleName());
 			}
-			
+
+			cart.setPrice(title.getPrice());
 			cartRepository.save(cart);
-			
+
 		} else {
 			// 상품 재고 확인
 			if (title.getStock() < dto.getCount()) {
 				throw new IllegalStateException("상품 재고 부족: " + title.getTitleName());
 			}
-			
+
 			Cart cart = dtoToEntity(dto);
+			cart.setPrice(title.getPrice());
 			cartRepository.save(cart);
 		}
 
 	}
 
+	// 회원 장바구니 목록 조회
+	@Override
+	public List<CartDTO> listLookUp(int no) {
+		List<Cart> list = cartRepository.findAllbyMemberNo(no);
+		List<CartDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
+		return dtoList;
+	}
+
+	// 단건 조회는 사용할 일이 없을 것 같음
 	// 장바구니 조회
 	@Override
 	public CartDTO cartLookUp(int no) {
@@ -80,6 +91,21 @@ public class CartServiceImpl implements CartService {
 	public void cartClearByDTOList(List<CartDTO> list) {
 		List<Cart> cartList = list.stream().map(dto -> dtoToEntityDelete(dto)).collect(Collectors.toList());
 		cartRepository.deleteAll(cartList);
+	}
+
+	// 장바구니 (수량) 수정
+	@Override
+	public void modify(CartDTO dto) {
+		Optional<Cart> optional = cartRepository.findById(dto.getCartNo());
+		if (optional.isPresent()) {
+			Cart cart = optional.get();
+			Title title = titleRepository.findById(dto.getTNo()).get();
+			if (dto.getCount() > title.getStock())
+				throw new IllegalStateException("상품 재고 부족: " + title.getTitleName());
+			cart.setCount(dto.getCount());
+			cart.setPrice(title.getPrice());
+			cartRepository.save(cart);
+		}
 	}
 
 }
