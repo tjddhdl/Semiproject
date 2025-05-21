@@ -2,6 +2,8 @@ package com.example.demo.title.dto;
 
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.title.entity.Category;
 import com.example.demo.title.entity.ModelName;
 
@@ -27,6 +29,7 @@ public class TitleDTO {
 	Integer price;
 	Integer ageRate;
 	LocalDate releaseDate;
+	MultipartFile file;
 	String image;
 	Integer stock;
 }

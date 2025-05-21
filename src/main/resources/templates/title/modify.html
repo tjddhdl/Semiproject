@@ -1,81 +1,98 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<form>
-
-		<label>타이틀번호</label> <input type="number" name="tNo"
-			th:value="${dto.getTNo}" readonly="readonly">
-		<div class="form-group">
-			<label>이름</label> <input type="text" class="form-control"
-				name="titleName" th:value="${dto.getTitleName()}">
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container">
+			<div class="row conter">
+				<div class="col-md-7" style="max-width: 700px; margin: 0 auto">
+					<div class="py-3 text-center">
+						<h1 style="color: #EC6090;">타이틀 정보 수정</h1>
+					</div>
+					<form id="modify-form" class="" method="post"
+						action="/title/register" enctype="multipart/form-data">
+						<div class="col-sm-12 mb-4">
+							<h3 style="color: #EC6090;">
+								유저번호: <span style="color: white;">[[${dto.getTNo}]]</span>
+							</h3>
+							<input type="number" th:value="${dto.tNo}" name="tNo" readonly
+								hidden>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="titleName" class="form-label" style="color: white;">타이틀
+								제목</label> <input type="text" class="form-control" id="titleName"
+								name="titleName" th:value="${dto.titleName}" placeholder value
+								required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="category" class="form-label" style="color: white;">
+								카테고리</label> <select class="form-control" id="category" name="category"
+								placeholder value required><option
+									th:each="category : ${categories}" th:value=${category}
+									th:text="${category}"
+									th:selected="${category}==${dto.category}"></select>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="model" class="form-label" style="color: white;">
+								기종</label><select class="form-control" id="model" name="model"
+								placeholder value required><option
+									th:each="model : ${modelNames}" th:value=${model}
+									th:text="${model}" th:selected="${model}==${dto.model}"></select>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="price" class="form-label" style="color: white;">
+								가격</label> <input type="number" class="form-control" id="price"
+								name="price" th:value="${dto.price}" placeholder value required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="ageRate" class="form-label" style="color: white;">
+								연령제한</label><input type="number" class="form-control" id="ageRate"
+								name="ageRate" th:value="${dto.ageRate}" placeholder value
+								required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="releaseDate" class="form-label" style="color: white;">
+								출시일</label> <input type="date" class="form-control" id="releaseDate"
+								name="releaseDate" th:value="${dto.releaseDate}" placeholder
+								value required>
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="imgFile" class="form-label" style="color: white;">
+								이미지</label> <input type="file" class="form-control" id="imgFile"
+								name="file">
+						</div>
+						<div class="col-sm-12 mb-4">
+							<label for="stock" class="form-label" style="color: white;">
+								재고</label><input type="number" class="form-control" id="stock"
+								name="stock" th:value="${dto.stock}" placeholder value required>
+						</div>
+					</form>
+					<hr class="my-4" style="color: white;">
+					<div class="d-flex justify-content-end gap-2">
+						<button class="btn btn-lg px-4" id="modifyBtn" type="button"
+							style="background-color: #EC6090; color: white; border-radius: 100px">등록</button>
+						<button class="btn btn-lg px-4" id="deleteBtn" type="button"
+							style="background-color: red; color: white; border-radius: 100px">삭제</button>
+					</div>
+					<script type="text/javascript">
+						const modifyBtn = document.getElementById("modifyBtn");
+						const deleteBtn = document.getElementById("deleteBtn");
+						modifyBtn.addEventListener("click",()=>{
+							const dtoForm = document.getElementById("modify-form");
+							dtoForm.setAttribute("action","/title/modify");
+							dtoForm.setAttribute("method","post");
+							dtoForm.setAttribute("enctype","multipart/form-data");
+							dtoForm.submit();
+						});
+						
+						deleteBtn.addEventListener("click",()=>{
+							const dtoForm = document.getElementById("modify-form");
+							dtoForm.setAttribute("action","/title/delete");
+							dtoForm.setAttribute("method","post");
+							dtoForm.submit();
+						});
+						</script>
+				</div>
+			</div>
 		</div>
-		<div>
-			<label>기종</label> <select name="model" id="model">
-				<option th:each="modelName : ${modelNames}" th:value="${modelName}"
-					th:text="${modelName}"
-					th:selected="${modelName}==${dto.getModel()}"></option>
-			</select>
-		</div>
-		<div>
-			<label>장르</label> <select name="category" id="category">
-				<option th:each="category : ${categories}" th:value="${category}"
-					th:text="${category}"
-					th:selected="${category}==${dto.getCategory()}"></option>
-			</select>
-		</div>
-		<div>
-			<label>가격</label><input type="number" name="price"
-				th:value="${dto.getPrice()}">
-		</div>
-		<div>
-			<label>연령제한</label><input type="number" name="ageRate"
-				th:value="${dto.getAgeRate()}">
-		</div>
-		<div>
-			<label>출시일</label><input type="date" name="releaseDate"
-				th:value="${dto.getReleaseDate()}">
-		</div>
-		<div>
-			<label>이미지경로</label><input type="text" name="image"
-				th:value="${dto.getImage()}">
-		</div>
-		<div>
-			<label>재고</label><input type="number" name="stock"
-				th:value="${dto.getStock()}">
-		</div>
-	</form>
-	<button type="button" class="modifybtn">수정</button>
-	<button type="button" class="deletebtn">삭제</button>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script th:inline="javascript">
-		const modifybtn = $('.modifybtn');
-		const deletebtn = $('.deletebtn');
-		
-		const form = $('form');
-		modifybtn.click(()=>{
-			if(confirm("수정하시겠습니까?")){
-				form.attr('action','/title/modify')
-				.attr('method','post')
-				.submit();
-			}else{
-				return;
-			}
-		});
-		
-		deletebtn.click(()=>{
-			if(confirm("삭제하시겠습니까?")){
-				form.attr('action','/title/delete')
-				.attr('method','post')
-				.submit();
-			}else{
-				return;
-			}
-		});
-		
-		</script>
-</body>
+	</th:block>
+</th:block>
 </html>

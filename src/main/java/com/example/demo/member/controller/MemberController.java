@@ -47,6 +47,7 @@ public class MemberController {
 
 	// 로그인한 자신만 접근 가능하도록 처리해야함
 	// 회원정보조회
+	// 카트랑 주문목록도 볼 수 있도록 전반적으로 뒤집어야함
 	@GetMapping("/lookUp")
 	public void lookUp(@RequestParam(name = "no") int no, Model model) {
 		MemberDTO dto = service.lookUp(no);
@@ -55,7 +56,7 @@ public class MemberController {
 
 	// 관리자 권한일 때 가능하도록 처리해야 함
 	// 회원목록조회
-	@GetMapping("listLookUp")
+	@GetMapping("/listLookUp")
 	public void listLookUp(Model model) {
 		List<MemberDTO> list = service.listLookUp();
 		model.addAttribute("list", list);
@@ -92,7 +93,6 @@ public class MemberController {
 
 	@PostMapping("/modifyAdmin")
 	public String modifyAdminPost(MemberDTO dto) {
-		System.out.println("???" + dto);
 		service.modify(dto);
 		return "redirect:/member/listLookUp";
 	}
@@ -100,6 +100,7 @@ public class MemberController {
 	// 회원삭제
 	@PostMapping("/delete")
 	public String delete(MemberDTO dto) {
+		System.out.println("뭐야뭐야뭐야"+dto);
 		service.delete(dto.getMemberNo());
 		return "redirect:/title/main";
 	}

@@ -12,6 +12,7 @@ import com.example.demo.title.entity.Category;
 import com.example.demo.title.entity.ModelName;
 import com.example.demo.title.entity.Title;
 import com.example.demo.title.repository.TitleRepository;
+import com.example.demo.title.util.FileUtility;
 
 @Service
 public class TitleServiceImpl implements TitleService {
@@ -19,9 +20,13 @@ public class TitleServiceImpl implements TitleService {
 	@Autowired
 	TitleRepository repository;
 
+	@Autowired
+	FileUtility utility;
+
 	// 게임등록
 	@Override
 	public void register(TitleDTO dto) {
+		dto.setImage(utility.fileUpload(dto.getFile()));
 		Title title = dtoToEntity(dto);
 		repository.save(title);
 	}
@@ -50,6 +55,9 @@ public class TitleServiceImpl implements TitleService {
 	@Override
 	public void modify(TitleDTO dto) {
 		Optional<Title> optional = repository.findById(dto.getTNo());
+		if(dto.getFile()!=null) {
+			dto.setImage(utility.fileUpload(dto.getFile()));
+		}
 		if (optional.isPresent()) {
 			Title title = optional.get();
 			if (dto.getTitleName() != null)
@@ -62,7 +70,7 @@ public class TitleServiceImpl implements TitleService {
 				title.setReleaseDate(dto.getReleaseDate());
 			if (dto.getStock() != null)
 				title.setStock(dto.getStock());
-			if (dto.getImage() != null)
+			if (dto.getImage() != null && dto.getImage() != title.getImage())
 				title.setImage(dto.getImage());
 			if (dto.getAgeRate() != null)
 				title.setAgeRate(dto.getAgeRate());
