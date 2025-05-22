@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.member.dto.MemberDTO;
@@ -17,6 +19,10 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberRepository memberRepository;
 
+	@Autowired
+	@Lazy
+	PasswordEncoder passwordEncoder;
+
 	// 회원가입
 	@Override
 	public void register(MemberDTO dto) {
@@ -24,6 +30,7 @@ public class MemberServiceImpl implements MemberService {
 		if (memberRepository.findByMemberId(dto.getId()) != null)
 			throw new IllegalArgumentException("이미 사용 중인 아이디입니다");
 		Member member = dtoToEntity(dto);
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		memberRepository.save(member);
 	}
 
@@ -57,6 +64,14 @@ public class MemberServiceImpl implements MemberService {
 		}
 	}
 
+	// 로그인용 아이디로 회원검색
+	@Override
+	public MemberDTO lookUpId(String id) {
+		Member member = memberRepository.findByMemberId(id);
+		MemberDTO dto = entityToDTO(member);
+		return dto;
+	}
+
 	// 회원정보수정
 	@Override
 	public void modify(MemberDTO dto) {
@@ -70,8 +85,6 @@ public class MemberServiceImpl implements MemberService {
 				throw new IllegalArgumentException("이미 사용 중인 아이디입니다");
 			if (dto.getId() != null)
 				member.setId(dto.getId());
-			if (dto.getPassword() != null)
-				member.setPassword(dto.getPassword());
 			if (dto.getUserName() != null)
 				member.setUserName(dto.getUserName());
 			if (dto.getAge() != null)

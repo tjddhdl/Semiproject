@@ -19,8 +19,8 @@ public class MemberServiceTest {
 
 	@Test
 	void 멤버가입() {
-		MemberDTO dto = MemberDTO.builder().id("asdfzxcv").password("qwerasdf").userName("땃쥐")
-				.age(LocalDate.of(2010, 3, 2)).role(Role.Customer).build();
+		MemberDTO dto = MemberDTO.builder().id("aaaa").password("aaaa").userName("거북").age(LocalDate.of(2010, 3, 2))
+				.role(Role.Customer).build();
 
 		service.register(dto);
 	}
@@ -41,9 +41,12 @@ public class MemberServiceTest {
 
 	@Test
 	void 회원정보수정() {
-		MemberDTO dto = service.lookUp(1);
-		dto.setId("user1");
+		MemberDTO dto = service.lookUp(5);
+		dto.setId("aaaa");
+		dto.setPassword("asdf");
 		service.modify(dto);
+		MemberDTO dtoCheck = service.lookUp(5);
+		System.out.println("결과: " + dtoCheck);
 	}
 
 	@Test

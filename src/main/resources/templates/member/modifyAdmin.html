@@ -2,26 +2,27 @@
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
 	<th:block th:fragment="content">
 		<div class="container">
-			<div class="row center">
-				<div class="col-md 7" style="max-width: 700px; margin: 0 auto;">
-					<div class="py-3 text-center">
-						<h1 style="color: #EC6090;">관리자 수정 페이지</h1>
-					</div>
-					<form id="register-form" class="needs-validation">
-						<div class="col-sm-12 mb-4">
-							<h3 style="color: #EC6090;">
-								유저번호: <span style="color: white;">[[${dto.getMemberNo}]]</span>
-							</h3>
-							<input type="number" th:value="${dto.memberNo}" name="memberNo"
-								hidden readonly> <input type="text" th:value="${dto.id}"
-								id="compare" hidden readonly>
+			<div class="header-text">
+				<div class="row center">
+					<div class="col-md 7" style="max-width: 700px; margin: 0 auto;">
+						<div class="py-3 text-center">
+							<h1 style="color: #EC6090;">관리자 수정 페이지</h1>
 						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="id" class="form-label" style="color: white;">아이디</label>
-							<input type="text" class="form-control" id="id" name="id"
-								th:value="${dto.id}" placeholder value required> <small
-								id="id-check"></small>
-							<script type="text/javascript">
+						<form id="register-form" class="needs-validation">
+							<div class="col-sm-12 mb-4">
+								<h3 style="color: #EC6090;">
+									유저번호: <span style="color: white;">[[${dto.getMemberNo}]]</span>
+								</h3>
+								<input type="number" th:value="${dto.memberNo}" name="memberNo"
+									hidden readonly> <input type="text"
+									th:value="${dto.id}" id="compare" hidden readonly>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="id" class="form-label" style="color: white;">아이디</label>
+								<input type="text" class="form-control" id="id" name="id"
+									th:value="${dto.id}" placeholder value required> <small
+									id="id-check"></small>
+								<script type="text/javascript">
 							const idText = document.getElementById("id");
 							const compare = document.getElementById("compare").value;
 							const idCheck = document.getElementById("id-check");
@@ -46,45 +47,45 @@
 								})
 							});
 							</script>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="password" class="form-label" style="color: white;">비밀번호</label>
+								<input type="text" class="form-control" id="password"
+									name="password" th:value="${dto.password}" placeholder value
+									required>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="userName" class="form-label" style="color: white;">유저
+									이름</label> <input type="text" class="form-control" id="userName"
+									name="userName" th:value="${dto.userName}" placeholder value
+									required>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="age" class="form-label" style="color: white;">생년월일</label>
+								<input type="date" class="form-control" id="age" name="age"
+									th:value="${dto.age}">
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="address" class="form-label" style="color: white;">주소</label>
+								<input type="text" class="form-control" id="address"
+									name="address" th:value="${dto.address}">
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="role" class="form-label" style="color: white;">권한</label>
+								<select class="form-control" id="role" name="role">
+									<option th:each="role : ${roles}" th:value=${role}
+										th:text="${role}">
+								</select>
+							</div>
+						</form>
+						<hr class="my-4" style="color: white;">
+						<div class="d-flex justify-content-end gap-2">
+							<button class="btn btn-lg px-4" id="modifyBtn" type="button"
+								style="background-color: #EC6090; color: white; border-radius: 100px">수정</button>
+							<button class="btn btn-lg px-4" id="deleteBtn" type="button"
+								style="background-color: red; color: white; border-radius: 100px">삭제</button>
 						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="password" class="form-label" style="color: white;">비밀번호</label>
-							<input type="text" class="form-control" id="password"
-								name="password" th:value="${dto.password}" placeholder value
-								required>
-						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="userName" class="form-label" style="color: white;">유저
-								이름</label> <input type="text" class="form-control" id="userName"
-								name="userName" th:value="${dto.userName}" placeholder value
-								required>
-						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="age" class="form-label" style="color: white;">생년월일</label>
-							<input type="date" class="form-control" id="age" name="age"
-								th:value="${dto.age}">
-						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="address" class="form-label" style="color: white;">주소</label>
-							<input type="text" class="form-control" id="address"
-								name="address" th:value="${dto.address}">
-						</div>
-						<div class="col-sm-12 mb-4">
-							<label for="role" class="form-label" style="color: white;">권한</label>
-							<select class="form-control" id="role" name="role">
-								<option th:each="role : ${roles}" th:value=${role}
-									th:text="${role}">
-							</select>
-						</div>
-					</form>
-					<hr class="my-4" style="color: white;">
-					<div class="d-flex justify-content-end gap-2">
-						<button class="btn btn-lg px-4" id="modifyBtn" type="button"
-							style="background-color: #EC6090; color: white; border-radius: 100px">수정</button>
-						<button class="btn btn-lg px-4" id="deleteBtn" type="button"
-							style="background-color: red; color: white; border-radius: 100px">삭제</button>
-					</div>
-					<script type="text/javascript">
+						<script type="text/javascript">
 					const modifyBtn = document.getElementById("modifyBtn");
 					const deleteBtn = document.getElementById("deleteBtn");
 					modifyBtn.addEventListener("click", ()=>{
@@ -102,10 +103,10 @@
 						dtoForm.submit();
 					});
 					</script>
+					</div>
 				</div>
 			</div>
 		</div>
-
 	</th:block>
 </th:block>
 </html>

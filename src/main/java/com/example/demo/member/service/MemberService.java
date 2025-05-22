@@ -35,6 +35,9 @@ public interface MemberService {
 	// 아이디 체크
 	boolean idCheck(String id);
 	
+	// 로그인용 아이디로 검색
+	MemberDTO lookUpId(String id);
+	
 	// 회원삭제
 	void delete(int id);
 }
