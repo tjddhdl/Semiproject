@@ -1,10 +1,37 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h3 th:each="dto : ${list}" th:text="${dto}"></h3>
-</body>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container head-text">
+			<div class="most-popular" style="margin-top: 0">
+				<div calss="row">
+					<div class="col-lg-12">
+						<div class="heading-section">
+							<h4>내 카트 목록</h4>
+						</div>
+						<div class="row">
+							<div class="col-lg-3 col-sm-6" th:each="dto : ${list}">
+								<div class="item row" style="margin: 10px">
+									<div>
+										<img alt="" th:src="@{'/img/'+${dto.title.image}}"
+											style="">
+									</div>
+									<div>
+										<h4 th:text="${dto.title.titleName}"></h4>
+										<ul>
+											<li><span>[[${dto.cart.count}]]개</span> 총
+												[[${dto.cart.count}*${dto.cart.price}]]원</li>
+											<li><input type="checkbox" name="cartIds"
+												th:value="${dto.cart.cartNo}"></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</th:block>
+</th:block>
 </html>

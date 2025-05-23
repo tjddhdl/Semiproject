@@ -13,6 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -27,7 +28,6 @@ public class SecurityConfig {
 		http.csrf(csrf -> csrf.disable());
 		
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/member/login").permitAll()
-//				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**").permitAll()
 				
 				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**","/assets/**", "/vendor/**").permitAll()
 				.requestMatchers("/member/listLookUp").hasAnyRole("Admin").requestMatchers("/member/lookUp")
@@ -36,8 +36,11 @@ public class SecurityConfig {
 				.permitAll().requestMatchers("/title/filter").permitAll().requestMatchers("/title/lookUp").permitAll()
 				.requestMatchers("/title/main").permitAll().requestMatchers("/title/modify").hasAnyRole("Admin")
 				.requestMatchers("/title/register").hasAnyRole("Admin").requestMatchers("/title/search").permitAll()
-				.requestMatchers("/lookUp").permitAll().requestMatchers("/js/custom.js").permitAll());
+				.requestMatchers("/cart/cartAdd").hasAnyRole("Customer","Admin")
+				.requestMatchers("/cart/listLookUp").hasAnyRole("Customer","Admin")
+				);
 
+		
 		http.formLogin(form -> form.loginPage("/member/login").loginProcessingUrl("/login").usernameParameter("id")
 				.passwordParameter("password").defaultSuccessUrl("/title/main", true).permitAll());
 		http.logout(logout -> logout.permitAll());
