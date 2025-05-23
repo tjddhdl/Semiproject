@@ -1,32 +1,64 @@
 <!DOCTYPE html>
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
 	<th:block th:fragment="content">
-		<div class="container head-text">
+		<div class="container header-text">
 			<div class="most-popular" style="margin-top: 0">
 				<div calss="row">
 					<div class="col-lg-12">
 						<div class="heading-section">
 							<h4>내 카트 목록</h4>
 						</div>
-						<div class="row">
-							<div class="col-lg-3 col-sm-6" th:each="dto : ${list}">
-								<div class="item row" style="margin: 10px">
-									<div>
-										<img alt="" th:src="@{'/img/'+${dto.title.image}}"
-											style="">
-									</div>
-									<div>
-										<h4 th:text="${dto.title.titleName}"></h4>
-										<ul>
-											<li><span>[[${dto.cart.count}]]개</span> 총
-												[[${dto.cart.count}*${dto.cart.price}]]원</li>
-											<li><input type="checkbox" name="cartIds"
-												th:value="${dto.cart.cartNo}"></li>
-										</ul>
+						<form id="cartForm">
+							<div class="row">
+								<div class="col-lg-3 col-sm-6" th:each="dto : ${list}">
+									<div class="item row" style="margin: 10px">
+										<div>
+											<img alt="" th:src="@{'/img/'+${dto.title.image}}" style="">
+										</div>
+										<div>
+											<h4 th:text="${dto.title.titleName}"></h4>
+											<ul>
+												<li><span>[[${dto.cart.count}]]개</span> 총
+													[[${dto.cart.count}*${dto.cart.price}]]원</li>
+												<li><input type="checkbox" name="cartIds"
+													th:value="${dto.cart.cartNo}"></li>
+											</ul>
+										</div>
 									</div>
 								</div>
 							</div>
+						</form>
+						<div
+							style="display: flex; flex-direction: column; align-items: center;">
+							<button class="btn btn-lg" id="orderBtn" type="button"
+								style="font-size: 15px; background-color: #EC6090; color: white; padding: 10px 0px; width: 300px; border-radius: 100px; margin-bottom: 20px">체크한
+								항목 결제하기</button>
+							<button class="btn btn-lg" id="deleteBtn" type="button"
+								style="font-size: 15px; background-color: #EC5050; color: white; padding: 10px 0px; width: 300px; border-radius: 100px">체크한
+								항목 카트에서 제거</button>
 						</div>
+						<script type="text/javascript">
+								const cartForm = document
+										.getElementById("cartForm");
+								const orderBtn = document
+										.getElementById("orderBtn");
+								const deleteBtn = document.getElementById("deleteBtn");
+								
+								
+								orderBtn.addEventListener("click",()=>{
+									const checked = document.querySelectorAll("input[name='cartIds']:checked");
+									if(checked.length===0){
+										alert("하나 이상 선택하세요");
+										return;
+									}
+									
+									cartForm.setAttribute("action","/order/orderCheck");
+									cartForm.setAttribute("method","post");
+									console.log("미치겠다진짜");
+									cartForm.submit();
+									});
+								
+							</script>
 					</div>
 				</div>
 			</div>

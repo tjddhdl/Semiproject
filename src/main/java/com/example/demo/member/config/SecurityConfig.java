@@ -25,22 +25,19 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable());
-		
+		http.csrf().disable();
+
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/member/login").permitAll()
-				
-				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**","/assets/**", "/vendor/**").permitAll()
+				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/assets/**", "/vendor/**","/").permitAll()
 				.requestMatchers("/member/listLookUp").hasAnyRole("Admin").requestMatchers("/member/lookUp")
 				.hasAnyRole("Customer", "Admin").requestMatchers("/member/modify").hasAnyRole("Customer", "Admin")
 				.requestMatchers("/member/modifyAdmin").hasAnyRole("Admin").requestMatchers("/member/register")
 				.permitAll().requestMatchers("/title/filter").permitAll().requestMatchers("/title/lookUp").permitAll()
 				.requestMatchers("/title/main").permitAll().requestMatchers("/title/modify").hasAnyRole("Admin")
 				.requestMatchers("/title/register").hasAnyRole("Admin").requestMatchers("/title/search").permitAll()
-				.requestMatchers("/cart/cartAdd").hasAnyRole("Customer","Admin")
-				.requestMatchers("/cart/listLookUp").hasAnyRole("Customer","Admin")
-				);
+				.requestMatchers("/cart/cartAdd").hasAnyRole("Customer", "Admin").requestMatchers("/cart/listLookUp")
+				.hasAnyRole("Customer", "Admin").requestMatchers("/order/orderCheck").hasAnyRole("Customer", "Admin"));
 
-		
 		http.formLogin(form -> form.loginPage("/member/login").loginProcessingUrl("/login").usernameParameter("id")
 				.passwordParameter("password").defaultSuccessUrl("/title/main", true).permitAll());
 		http.logout(logout -> logout.permitAll());
@@ -53,9 +50,8 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
-//	@Bean
-//	public WebSecurityCustomizer webSecurityCustomizer() {
-//		return (web) -> web.ignoring().requestMatchers("/assets/**", "/vendor/**", "/images/**", "/img/**",
-//				"/jquery/**");
-//	}
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().requestMatchers("/order/orderCheck");
+	}
 }
