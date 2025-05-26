@@ -33,7 +33,7 @@ public class OrderRepositoryTest {
 
 	@Test
 	void 오더목록조회() {
-		List<Order> list = repository.findAllByMemberNo(1);
+		List<Order> list = repository.findAllByMemberNo(6);
 		for (Order order : list) {
 			System.out.println(order);
 		}

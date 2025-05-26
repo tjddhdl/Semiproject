@@ -21,12 +21,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final UserDetailsService userDetailsService;
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-
+		http
+			.csrf().disable();
+//			.formLogin().disable()
+//			.httpBasic().disable()
+//			.authorizeHttpRequests((auth)->auth.anyRequest().permitAll());
+		
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/member/login").permitAll()
 				.requestMatchers("/css/**", "/js/**", "/img/**", "/images/**", "/assets/**", "/vendor/**","/").permitAll()
 				.requestMatchers("/member/listLookUp").hasAnyRole("Admin").requestMatchers("/member/lookUp")
@@ -36,7 +38,10 @@ public class SecurityConfig {
 				.requestMatchers("/title/main").permitAll().requestMatchers("/title/modify").hasAnyRole("Admin")
 				.requestMatchers("/title/register").hasAnyRole("Admin").requestMatchers("/title/search").permitAll()
 				.requestMatchers("/cart/cartAdd").hasAnyRole("Customer", "Admin").requestMatchers("/cart/listLookUp")
-				.hasAnyRole("Customer", "Admin").requestMatchers("/order/orderCheck").hasAnyRole("Customer", "Admin"));
+				.hasAnyRole("Customer", "Admin")
+				.requestMatchers("/cart/cartDelete").hasAnyRole("Customer","Admin")
+				.requestMatchers("/cart/modify").hasAnyRole("Customer","Admin")
+				.requestMatchers("/order/**").hasAnyRole("Customer","Admin"));
 
 		http.formLogin(form -> form.loginPage("/member/login").loginProcessingUrl("/login").usernameParameter("id")
 				.passwordParameter("password").defaultSuccessUrl("/title/main", true).permitAll());
@@ -48,10 +53,5 @@ public class SecurityConfig {
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/order/orderCheck");
 	}
 }

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container header-text">
+			<div
+				style="display: flex; justify-content: center; margin-top: 20px;">
+				<h1 class="mt-4 mb-4">주문이 완료되었습니다</h1>
+			</div>
+			<div
+				style="display: flex; justify-content: center; margin-top: 20px;">
+				<button class="w-100 btn btn-lg mt-4" type="button"
+					style="max-width: 700px; background-color: #EC6090; color: white; border-radius: 100px;"
+					onclick="location.href='/title/main'">메인으로</button>
+			</div>
+		</div>
+	</th:block>
+</th:block>
+</html>

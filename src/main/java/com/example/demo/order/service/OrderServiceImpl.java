@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 	// 특정회원 주문목록 조회
 	@Override
 	public List<OrderDTO> orderSearch(int memberNo) {
-		List<Order> list = repository.findAllByMemberNo(1);
+		List<Order> list = repository.findAllByMemberNo(memberNo);
 		List<OrderDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
 		return dtoList;
 	}

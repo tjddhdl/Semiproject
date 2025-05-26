@@ -31,13 +31,13 @@ public class CartController {
 
 	@Autowired
 	CartService service;
-	
+
 	@Autowired
 	MemberService memberService;
 
 	@Autowired
 	TitleService titleService;
-	
+
 	// 장바구니 추가
 	@PostMapping("/cartAdd")
 	@ResponseBody
@@ -46,20 +46,25 @@ public class CartController {
 		dto.setMemberNo(mDTO.getMemberNo());
 		service.cartAdd(dto);
 		return ResponseEntity.ok("성공");
-		
+
 	}
-	
+
 	// 장바구니 삭제
-	
-	
+	@PostMapping("/cartDelete")
+	public String cartDelete(@RequestParam(name = "cartIds") List<Integer> cartIds) {
+		List<CartDTO> list = service.cartSelect(cartIds);
+		service.cartClearByDTOList(list);
+		return "redirect:/cart/listLookUp";
+	}
+
 	// 회원 장바구니 조회
 	@GetMapping("/listLookUp")
 	public void listLookUpAdmin(Principal principal, Model model) {
 		MemberDTO mdto = memberService.lookUpId(principal.getName());
 		List<CartDTO> list = service.listLookUp(mdto.getMemberNo());
-		
+
 		List<Map<String, Object>> cartTitleList = new ArrayList<>();
-		for(CartDTO dto : list) {
+		for (CartDTO dto : list) {
 			TitleDTO titleDTO = titleService.lookUp(dto.getTNo());
 			Map<String, Object> map = new HashMap<>();
 			map.put("cart", dto);
@@ -68,9 +73,11 @@ public class CartController {
 		}
 		model.addAttribute("list", cartTitleList);
 	}
-	
+
 	// 로그인한 유저 정보로 조회하게 수정 필요
 	// 관리자용 회원 장바구니 조회
+	// 아직 미완성임
+	// 이게 필요한가???
 	@GetMapping("/listLookUpAdmin")
 	public void listLookUpAdmin(@RequestParam("no") int no, Model model) {
 		List<CartDTO> list = service.listLookUp(no);
@@ -78,10 +85,14 @@ public class CartController {
 	}
 
 	// 장바구니 수량수정
-	@PostMapping("/list/modify")
-	public void modify() {
-
+	@GetMapping("/modify")
+	@ResponseBody
+	public ResponseEntity<String> modify(@RequestParam(name = "cartId") int cartId,
+			@RequestParam(name = "count") int count) {
+		CartDTO dto = service.cartLookUp(cartId);
+		dto.setCount(dto.getCount() + count);
+		service.modify(dto);
+		return ResponseEntity.ok("success");
 	}
 
-	// 선택한 장바구니 결제로 전달
 }

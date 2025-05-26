@@ -18,8 +18,17 @@
 										<div>
 											<h4 th:text="${dto.title.titleName}"></h4>
 											<ul>
-												<li><span>[[${dto.cart.count}]]개</span> 총
-													[[${dto.cart.count}*${dto.cart.price}]]원</li>
+												<li>
+													<div style="display: flex; align-items: center;">
+														<button class="decreaseBtn"
+															th:attr="data-cart-id=${dto.cart.cartNo}"
+															style="height: 20px; font-size: 10px; background-color: #666666; border: none; color: white; border-radius: 5px"><</button>
+														<span style="margin-top: 0;">[[${dto.cart.count}]]개</span>
+														<button class="increaseBtn"
+															th:attr="data-cart-id=${dto.cart.cartNo}"
+															style="height: 20px; font-size: 10px; background-color: #666666; border: none; color: white; border-radius: 5px">></button>
+													</div> 총 [[${dto.cart.count}*${dto.cart.price}]]원
+												</li>
 												<li><input type="checkbox" name="cartIds"
 													th:value="${dto.cart.cartNo}"></li>
 											</ul>
@@ -38,10 +47,8 @@
 								항목 카트에서 제거</button>
 						</div>
 						<script type="text/javascript">
-								const cartForm = document
-										.getElementById("cartForm");
-								const orderBtn = document
-										.getElementById("orderBtn");
+								const cartForm = document.getElementById("cartForm");
+								const orderBtn = document.getElementById("orderBtn");
 								const deleteBtn = document.getElementById("deleteBtn");
 								
 								
@@ -52,12 +59,42 @@
 										return;
 									}
 									
-									cartForm.setAttribute("action","/order/orderCheck");
 									cartForm.setAttribute("method","post");
-									console.log("미치겠다진짜");
+									cartForm.setAttribute("action","/order/orderCheck");
 									cartForm.submit();
 									});
 								
+								deleteBtn.addEventListener("click",()=>{
+									if(confirm("선택한 목록을 삭제하겠습니까?")){
+									cartForm.setAttribute("method","post");
+									cartForm.setAttribute("action","/cart/cartDelete");
+									cartForm.submit();
+									}
+								});
+								
+								const decreaseBtns = document.querySelectorAll(".decreaseBtn");
+								decreaseBtns.forEach(btn =>{
+									btn.addEventListener("click",()=>{
+										const cartId = btn.getAttribute("data-cart-id");
+										
+										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=-1`);
+										const span = btn.parentElement.querySelector("span");
+										let current = parseInt(span.textContent)
+										span.textContent = (current-1)+"개";
+									})
+								});
+								
+								const increaseBtns = document.querySelectorAll(".increaseBtn");
+								increaseBtns.forEach(btn =>{
+									btn.addEventListener("click",()=>{
+										const cartId = btn.getAttribute("data-cart-id");
+										
+										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=1`);
+										const span = btn.parentElement.querySelector("span");
+										let current = parseInt(span.textContent)
+										span.textContent = (current+1)+"개";
+									});
+								});
 							</script>
 					</div>
 				</div>

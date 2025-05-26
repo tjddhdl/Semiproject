@@ -40,7 +40,7 @@ public class OrderServiceTest {
 
 	@Test
 	void 오더멤버검색() {
-		List<OrderDTO> list = service.orderSearch(1);
+		List<OrderDTO> list = service.orderSearch(6);
 		for (OrderDTO dto : list) {
 			System.out.println("목록: " + dto);
 		}
@@ -48,7 +48,7 @@ public class OrderServiceTest {
 
 	@Test
 	void 오더no검색() {
-		OrderDTO dto = service.orderLookUp(5);
+		OrderDTO dto = service.orderLookUp(6);
 		System.out.println("5번오더: " + dto);
 	}
 

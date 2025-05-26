@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container header-text">
+			<h4>
+				총 <span>[[${all}]]</span>원
+			</h4>
+			<form action="/order/orderComplete" method="post">
+				<div class="most-popular" style="margin-top: 0; overflow-x: auto;">
+					<div class="scroll-row" style="display: flex; gap: 10px;">
+						<div class="col-lg-3 col-sm-6" th:each="dto : ${list}">
+							<div class="item row" style="margin: 10px">
+								<div>
+									<img alt="" th:src="@{'/img/'+${dto.title.image}}" style="">
+								</div>
+								<div>
+									<h4 th:text="${dto.title.titleName}"></h4>
+									<ul>
+										<li><span>[[${dto.cart.count}]]개</span> 총
+											[[${dto.cart.count}*${dto.cart.price}]]원</li>
+										<li><input type="number" name="cartIds"
+											th:value="${dto.cart.cartNo}" hidden readonly></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div
+					style="display: flex; justify-content: center; margin-top: 20px;">
+					<hr class="my-4" style="color: white;">
+					<button class="w-100 btn btn-lg" type="submit"
+						style="background-color: #EC6090; color: white; border-radius: 100px; max-width: 700px">결제하기</button>
+				</div>
+			</form>
+		</div>
+	</th:block>
+</th:block>
+</html>
