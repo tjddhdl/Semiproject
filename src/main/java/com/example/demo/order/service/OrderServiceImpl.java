@@ -145,4 +145,14 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 
+	// 주문 삭제(배송 완료일 경우만)
+	@Override
+	public void orderDelete(int orderNo) {
+		Order order = repository.findById(orderNo).get();
+		if (order.getStatus() == Status.Finished) {
+			orderItemService.orderItemDelete(orderNo);
+			repository.deleteById(orderNo);
+		}
+	}
+
 }

@@ -39,4 +39,7 @@ public interface OrderService {
 
 	// 주문 취소(배송전일경우만)
 	void orderCancel(int orderNo);
+	
+	// 주문 삭제(배송후일경우만)
+	void orderDelete(int orderNo);
 }

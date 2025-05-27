@@ -10,18 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.example.demo.cart.dto.CartDTO;
 import com.example.demo.cart.service.CartService;
 import com.example.demo.member.dto.MemberDTO;
 import com.example.demo.member.service.MemberService;
 import com.example.demo.order.dto.OrderDTO;
+import com.example.demo.order.dto.OrderPackage;
+import com.example.demo.order.dto.OrderPackage.OrderItemTitle;
 import com.example.demo.order.service.OrderService;
+import com.example.demo.orderItem.dto.OrderItemDTO;
+import com.example.demo.orderItem.service.OrderItemService;
 import com.example.demo.title.dto.TitleDTO;
 import com.example.demo.title.service.TitleService;
 
@@ -34,6 +35,9 @@ public class OrderController {
 
 	@Autowired
 	OrderService orderService;
+
+	@Autowired
+	OrderItemService itemService;
 
 	@Autowired
 	TitleService titleService;
@@ -76,10 +80,51 @@ public class OrderController {
 	// 주문 이력 페이지
 	@GetMapping("/orderLookUp")
 	public void orderLookUp(Principal principal, Model model) {
+		// 전체 정보 담을 dto list
+		List<OrderPackage> list = new ArrayList<>();
+
+		// 멤버정보로 order목록 구하기
 		MemberDTO dto = memberService.lookUpId(principal.getName());
-		List<OrderDTO> list = orderService.orderSearch(dto.getMemberNo());
-		System.out.println(list);
+		List<OrderDTO> orderDTOList = orderService.orderSearch(dto.getMemberNo());
+
+		// order묶음 각각마다 order상세 타이틀 엮어서 package 리스트에 넣기
+		for (OrderDTO orderDTO : orderDTOList) {
+
+			// 개별 패키지에 오더dto 넣기
+			OrderPackage orderPackage = new OrderPackage();
+			orderPackage.setOrderDTO(orderDTO);
+
+			// 개별 패키지에 넣을 오더아이템-타이틀 리스트 만들기
+			List<OrderItemTitle> oTList = new ArrayList<>();
+
+			// 오더아이템-타이틀을 구해서 oTList에 넣기
+			List<OrderItemDTO> itemList = itemService.orderItemLookUp(orderDTO.getOrderNo());
+			for (OrderItemDTO itemDTO : itemList) {
+				TitleDTO titleDTO = titleService.lookUp(itemDTO.getTNo());
+				OrderItemTitle itemTitle = OrderItemTitle.builder().orderItemDTO(itemDTO).titleDTO(titleDTO).build();
+				oTList.add(itemTitle);
+			}
+
+			// 개별 패키지에 oTList 넣기
+			orderPackage.setOrderTitleList(oTList);
+
+			// 마지막 리스트에 추가
+			list.add(orderPackage);
+		}
 		model.addAttribute("list", list);
 	}
 
+	// 주문삭제
+	@GetMapping("/orderDelete")
+	public String orderDelete(@RequestParam(name = "orderNo") int orderNo) {
+		orderService.orderDelete(orderNo);
+		return "redirect:/order/orderLookUp";
+	}
+
+	// 주문취소
+	@GetMapping("/orderCancel")
+	public String orderCancel(@RequestParam(name = "orderNo") int orderNo) {
+		orderService.orderCancel(orderNo);
+		return "redirect:/order/orderLookUp";
+	}
 }

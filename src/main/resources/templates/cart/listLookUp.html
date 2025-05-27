@@ -20,11 +20,11 @@
 											<ul>
 												<li>
 													<div style="display: flex; align-items: center;">
-														<button class="decreaseBtn"
+														<button class="decreaseBtn" type="button"
 															th:attr="data-cart-id=${dto.cart.cartNo}"
 															style="height: 20px; font-size: 10px; background-color: #666666; border: none; color: white; border-radius: 5px"><</button>
 														<span style="margin-top: 0;">[[${dto.cart.count}]]개</span>
-														<button class="increaseBtn"
+														<button class="increaseBtn" type="button"
 															th:attr="data-cart-id=${dto.cart.cartNo}"
 															style="height: 20px; font-size: 10px; background-color: #666666; border: none; color: white; border-radius: 5px">></button>
 													</div> 총 [[${dto.cart.count}*${dto.cart.price}]]원
@@ -79,8 +79,8 @@
 										
 										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=-1`);
 										const span = btn.parentElement.querySelector("span");
-										let current = parseInt(span.textContent)
-										span.textContent = (current-1)+"개";
+										let current = parseInt(span.textContent);
+										span.textContent = (current - 1)+"개";
 									})
 								});
 								
@@ -91,8 +91,8 @@
 										
 										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=1`);
 										const span = btn.parentElement.querySelector("span");
-										let current = parseInt(span.textContent)
-										span.textContent = (current+1)+"개";
+										let current = parseInt(span.textContent);
+										span.textContent = (current + 1)+"개";
 									});
 								});
 							</script>

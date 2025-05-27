@@ -1,9 +1,116 @@
 <!DOCTYPE html>
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
 	<th:block th:fragment="content">
-	<div>
-	<h4 th:text=${list}></h4>
-	</div>
+		<div class="container header-text">
+			<div class="row center">
+				<div class="row">
+					<h1 class="mb-4" style="color: #EC6090;">주문 목록</h1>
+					<div class="col-lg-12 game-details">
+						<div class="content" th:each="package : ${list}"
+							style="margin-bottom: 100px">
+							<div class="d-flex align-items-center justify-content-between">
+								<div>
+									<div>
+										<h5>
+											[[${#temporals.format(package.orderDTO.orderDate,'yyyy년 MM월
+											dd일 주문')}]]</h5>
+									</div>
+									<div>
+										<span style="color: white;">총
+											[[${package.orderDTO.totalPrice}]]원</span>
+									</div>
+								</div>
+								<div>
+									<ul>
+										<li class="status"><input type="text"
+											th:value="${package.orderDTO.status}" hidden readonly>
+											<p style="font-size: 25px"></p></li>
+										<li class="arrivedDate">
+											<p style="font-size: 20px"
+												th:text="${#temporals.format(package.orderDTO.arrivedDate, 'yy.MM.dd')}"></p>
+										</li>
+									</ul>
+								</div>
+								<div>
+									<ul>
+										<li><input th:value="${package.orderDTO.orderNo}" hidden
+											readonly class="dOrderNo"> <input
+											th:value="${package.orderDTO.status}" hidden readonly
+											class="dStatus">
+											<button class="btn mb-4 deleteBtn"
+												style="background-color: #EC5050; color: white; border-radius: 100px">주문내역
+												삭제</button></li>
+										<li><input th:value="${package.orderDTO.orderNo}" hidden
+											readonly class="cOrderNo"> <input
+											th:value="${package.orderDTO.status}" hidden readonly
+											class="cStatus">
+											<button class="btn px-4 mb-4 cancelBtn"
+												style="background-color: red; color: white; border-radius: 100px">주문
+												취소</button></li>
+									</ul>
+								</div>
+							</div>
+							<div
+								class="left-info d-flex align-items-center justify-content-between"
+								th:each="otList : ${package.orderTitleList}">
+
+								<div>
+									<img alt="" th:src="@{'/img/'+${otList.titleDTO.image}}"
+										style="max-width: 200px">
+								</div>
+								<div class="col-lg-6">
+									<h3 th:text="${otList.titleDTO.titleName}"
+										style="text-align: left; margin-bottom: 30px; margin-top: 30px"></h3>
+								</div>
+								<div>
+									<h3 th:text="${otList.orderItemDTO.price}+원"></h3>
+									<h3 th:text="${otList.orderItemDTO.count}+개"></h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script th:inline="javascript">
+							document.querySelectorAll(".status").forEach(status => {
+								const value = status.querySelector("input").value;
+								const statusEl = status.querySelector("p");
+								if(value==="Before"){
+									statusEl.textContent = "배송 준비중";
+								}else if (value==="Progress"){
+									statusEl.textContent = "배송중";
+								}else if (value === "Finished"){
+									statusEl.textContent = "배송 완료";
+								}
+							});
+							
+							document.querySelectorAll(".deleteBtn").forEach(deleteBtn =>{
+							deleteBtn.addEventListener("click",()=>{
+								const status = deleteBtn.parentElement.querySelector(".dStatus").value;
+								if(status==="Before"||status==="Progress"){
+									alert("배송 완료인 경우에만 삭제할 수 있습니다");
+									return;
+								}
+								if(confirm("이 주문이력을 삭제하시겠습니까?")){
+									const orderNo = deleteBtn.parentElement.querySelector(".dOrderNo").value;
+									window.location.href = `/order/orderDelete?orderNo=${orderNo}`;
+								}
+							});
+							});
+							
+							document.querySelectorAll(".cancelBtn").forEach(cancelBtn =>{
+								const status = deleteBtn.parentElement.querySelector(".cStatus").value;
+								if(status==="Progress"||status==="Finished"){
+									alert("배송 전일 경우에만 취소할 수 있습니다");
+									return;
+								}
+								if(confirm("이 주문을 취소하시겠습니까?")){
+									const orderNo = cancelBtn.parentElement.querySelector(".cOrderNo");
+									window.location.href = `/order/orderCancel?orderNo=${orderNo}`;
+								}
+							});
+							</script>
 	</th:block>
 </th:block>
 </html>
