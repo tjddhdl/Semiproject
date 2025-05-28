@@ -100,16 +100,17 @@
 							});
 							
 							document.querySelectorAll(".cancelBtn").forEach(cancelBtn =>{
-								const status = deleteBtn.parentElement.querySelector(".cStatus").value;
+								cancelBtn.addEventListener("click",()=>{
+								const status = cancelBtn.parentElement.querySelector(".cStatus").value;
 								if(status==="Progress"||status==="Finished"){
 									alert("배송 전일 경우에만 취소할 수 있습니다");
 									return;
 								}
 								if(confirm("이 주문을 취소하시겠습니까?")){
-									const orderNo = cancelBtn.parentElement.querySelector(".cOrderNo");
+									const orderNo = cancelBtn.parentElement.querySelector(".cOrderNo").value;
 									window.location.href = `/order/orderCancel?orderNo=${orderNo}`;
 								}
-							});
+							})});
 							</script>
 	</th:block>
 </th:block>

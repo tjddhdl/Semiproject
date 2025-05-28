@@ -102,6 +102,12 @@
 												alert("에러가 발생했습니다");
 											});
 									});
+									
+									buyBtn.addEventListener("click",()=>{
+										if(alert("바로 구매하시겠습니까?")){
+											dtoForm.setAttribute("action","/cart");
+										}
+									});
 								</script>
 							</ul>
 						</div>

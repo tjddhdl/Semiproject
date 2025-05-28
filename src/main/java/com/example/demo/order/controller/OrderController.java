@@ -116,15 +116,21 @@ public class OrderController {
 
 	// 주문삭제
 	@GetMapping("/orderDelete")
-	public String orderDelete(@RequestParam(name = "orderNo") int orderNo) {
+	public String orderDelete(@RequestParam(name = "orderNo") int orderNo, Principal principal) {
+		String memberId = principal.getName();
+		String idData = memberService.lookUp(orderService.orderLookUp(orderNo).getMemberNo()).getId();
 		orderService.orderDelete(orderNo);
 		return "redirect:/order/orderLookUp";
 	}
 
 	// 주문취소
 	@GetMapping("/orderCancel")
-	public String orderCancel(@RequestParam(name = "orderNo") int orderNo) {
-		orderService.orderCancel(orderNo);
+	public String orderCancel(@RequestParam(name = "orderNo") int orderNo, Principal principal) {
+//		String memberId = principal.getName();
+//		String idData = memberService.lookUp(orderService.orderLookUp(orderNo).getMemberNo()).getId();
+//		if (memberId.matches(idData)) {
+			orderService.orderCancel(orderNo);
+//		}
 		return "redirect:/order/orderLookUp";
 	}
 }

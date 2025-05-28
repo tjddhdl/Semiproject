@@ -41,7 +41,8 @@ public class SecurityConfig {
 				.hasAnyRole("Customer", "Admin")
 				.requestMatchers("/cart/cartDelete").hasAnyRole("Customer","Admin")
 				.requestMatchers("/cart/modify").hasAnyRole("Customer","Admin")
-				.requestMatchers("/order/**").hasAnyRole("Customer","Admin"));
+				.requestMatchers("/order/**").hasAnyRole("Customer","Admin")
+				.requestMatchers("/order/orderCancel").hasAnyRole("Customer","Admin"));
 
 		http.formLogin(form -> form.loginPage("/member/login").loginProcessingUrl("/login").usernameParameter("id")
 				.passwordParameter("password").defaultSuccessUrl("/title/main", true).permitAll());

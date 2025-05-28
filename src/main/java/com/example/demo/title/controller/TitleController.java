@@ -103,7 +103,6 @@ public class TitleController {
 	// 상품 삭제
 	@PostMapping("/delete")
 	public String delete(TitleDTO dto) {
-		System.out.println("아아" + dto);
 		service.delete(dto.getTNo());
 		return "redirect:/title/main";
 	}

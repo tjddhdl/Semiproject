@@ -127,6 +127,7 @@ public class OrderServiceImpl implements OrderService {
 
 	// 주문 취소(배송전일경우만)
 	@Override
+	@Transactional
 	public void orderCancel(int orderNo) {
 		Optional<Order> optional = repository.findById(orderNo);
 		Order order = optional.get();
