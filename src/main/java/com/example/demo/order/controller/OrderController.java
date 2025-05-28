@@ -1,6 +1,7 @@
 package com.example.demo.order.controller;
 
 import java.security.Principal;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.example.demo.member.service.MemberService;
 import com.example.demo.order.dto.OrderDTO;
 import com.example.demo.order.dto.OrderPackage;
 import com.example.demo.order.dto.OrderPackage.OrderItemTitle;
+import com.example.demo.order.entity.Status;
 import com.example.demo.order.service.OrderService;
 import com.example.demo.orderItem.dto.OrderItemDTO;
 import com.example.demo.orderItem.service.OrderItemService;
@@ -60,6 +62,27 @@ public class OrderController {
 			map.put("title", titleDTO);
 			cartTitleList.add(map);
 		}
+		model.addAttribute("list", cartTitleList);
+		model.addAttribute("all", all);
+		return "/order/orderCheck";
+	}
+
+	// 타이틀-> 바로 구매 -> 주문 확인 페이지
+	@PostMapping("/buy")
+	public String buy(CartDTO dto, Principal principal, Model model) {
+		MemberDTO memberDTO = memberService.lookUpId(principal.getName());
+		dto.setMemberNo(memberDTO.getMemberNo());
+		cartService.cartAdd(dto);
+		// 카트서비스에서 타이틀 이름으로 카트를 찾는 걸 만들자
+		CartDTO cartDTO = cartService.lookUpMNoTNo(memberDTO.getMemberNo(), dto.getTNo());
+		List<Map<String, Object>> cartTitleList = new ArrayList<>();
+		int all = 0;
+		all += cartDTO.getCount() * cartDTO.getPrice();
+		TitleDTO titleDTO = titleService.lookUp(cartDTO.getTNo());
+		Map<String, Object> map = new HashMap<>();
+		map.put("cart", cartDTO);
+		map.put("title", titleDTO);
+		cartTitleList.add(map);
 		model.addAttribute("list", cartTitleList);
 		model.addAttribute("all", all);
 		return "/order/orderCheck";
@@ -119,18 +142,41 @@ public class OrderController {
 	public String orderDelete(@RequestParam(name = "orderNo") int orderNo, Principal principal) {
 		String memberId = principal.getName();
 		String idData = memberService.lookUp(orderService.orderLookUp(orderNo).getMemberNo()).getId();
-		orderService.orderDelete(orderNo);
+		if (memberId.matches(idData)) {
+			orderService.orderDelete(orderNo);
+		}
 		return "redirect:/order/orderLookUp";
 	}
 
 	// 주문취소
 	@GetMapping("/orderCancel")
 	public String orderCancel(@RequestParam(name = "orderNo") int orderNo, Principal principal) {
-//		String memberId = principal.getName();
-//		String idData = memberService.lookUp(orderService.orderLookUp(orderNo).getMemberNo()).getId();
-//		if (memberId.matches(idData)) {
+		String memberId = principal.getName();
+		String idData = memberService.lookUp(orderService.orderLookUp(orderNo).getMemberNo()).getId();
+		if (memberId.matches(idData)) {
 			orderService.orderCancel(orderNo);
-//		}
+		}
 		return "redirect:/order/orderLookUp";
+	}
+
+	// 주문 정보 수정(관리자)
+	// 배송 관련 정보만 수정
+	@GetMapping("/modify")
+	public void orderModify(@RequestParam(name = "orderNo") int orderNo, Model model) {
+		OrderDTO dto = orderService.orderLookUp(orderNo);
+		dto.setOrderDate(dto.getOrderDate().truncatedTo(ChronoUnit.MINUTES));
+		model.addAttribute("dto", dto);
+		model.addAttribute("statuses", Status.values());
+	}
+
+	// 주문 정보 수정 post
+	@PostMapping("/modify")
+	public String modifyPost(OrderDTO dto) {
+		System.out.println(dto);
+		OrderDTO orderDTO = orderService.orderLookUp(dto.getOrderNo());
+		orderDTO.setStatus(dto.getStatus());
+		orderDTO.setArrivedDate(dto.getArrivedDate());
+		orderService.orderModify(orderDTO);
+		return "redirect:/title/main";
 	}
 }

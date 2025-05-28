@@ -52,6 +52,9 @@ public interface CartService {
 	// 장바구니 (수량) 수정
 	void modify(CartDTO dto);
 
+	// 멤버 no와 타이틀 no로 특정 장바구니 조회
+	CartDTO lookUpMNoTNo(int memberNo, int tNo);
+
 	// 장바구니에서 특정 목록 선택
 	List<CartDTO> cartSelect(List<Integer> cartNo);
 

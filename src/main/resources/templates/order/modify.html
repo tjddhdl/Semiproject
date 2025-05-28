@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container">
+			<div class="header-text">
+				<div class="row center">
+					<div class="col-md 7" style="max-width: 700px; margin: 0 auto;">
+						<div class="py-3 text-center">
+							<h1 style="color: #EC6090;">주문정보 수정 페이지</h1>
+						</div>
+						<form id="modifyForm" class="needs-validation">
+							<div class="col-sm-12 mb-4">
+								<h3 style="color: #EC6090;">
+									주문번호: <span style="color: white;">[[${dto.orderNo}]]</span>
+								</h3>
+								<input type="number" th:value="${dto.memberNo}" name="memberNo"
+									hidden readonly> <input type="text"
+									th:value="${dto.orderNo}" name="orderNo" hidden readonly>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="memberNo" class="form-label" style="color: white;">유저
+									번호</label> <input type="text" class="form-control" id="memberNo"
+									name="memberNo" th:value="${dto.memberNo}" placeholder value
+									required readonly="readonly">
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="orderDate" class="form-label" style="color: white;">주문일</label>
+								<input type="datetime-local" class="form-control" id="orderDate"
+									name="orderDate" th:value="${dto.orderDate}" placeholder value
+									required readonly="readonly">
+							</div>
+
+							<div class="col-sm-12 mb-4">
+								<label for="status" class="form-label" style="color: white;">배송
+									상태</label> <select class="form-control" id="status" name="status">
+									<option th:each="status : ${statuses}" th:value=${status}
+										th:text=${status} th:selected=${status}==${dto.status}>
+								</select>
+							</div>
+							<div class="col-sm-12 mb-4">
+								<label for="arrivedDate" class="form-label"
+									style="color: white;">도착일</label> <input type="datetime-local"
+									class="form-control" id="arrivedDate" name="arrivedDate"
+									th:value="${dto.arrivedDate}">
+							</div>
+						</form>
+						<hr class="my-4" style="color: white;">
+						<div class="d-flex justify-content gap-2">
+							<button class="btn btn-lg px-4" id="modifyBtn" type="button"
+								style="background-color: #EC6090; color: white; border-radius: 100px">수정</button>
+						</div>
+					</div>
+					<script type="text/javascript">
+						const modifyBtn = document.getElementById("modifyBtn");
+						const modifyForm = document.getElementById("modifyForm");
+						modifyBtn.addEventListener("click",()=>{
+							const status = document.getElementById("status").value;
+							const arrivedDate = document.getElementById("arrivedDate").value;
+							if(status==="Finished"&&arrivedDate===""){
+								alert("배송 완료일 경우 도착일을 입력하세요");
+								return;
+							}else if(status!=="Finished"&&arrivedDate!==""){
+								alert("배송 완료가 아닐 경우 도착일을 지우세요");
+								return;
+							}
+							modifyForm.setAttribute("action","/order/modify");
+							modifyForm.setAttribute("method","post");
+							modifyForm.submit();
+						});
+					</script>
+				</div>
+			</div>
+		</div>
+
+	</th:block>
+</th:block>
+</html>

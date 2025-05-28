@@ -78,6 +78,15 @@ public class CartServiceImpl implements CartService {
 		return null;
 	}
 
+	// 바로구매용도임
+	// 멤버 no와 타이틀 no로 특정 장바구니 조회
+	@Override
+	public CartDTO lookUpMNoTNo(int memberNo, int tNo) {
+		Cart cart = cartRepository.findOneByMemberNoAndTNo(memberNo, tNo).get();
+		CartDTO dto = entityToDTO(cart);
+		return dto;
+	}
+
 	// 장바구니에서 특정 목록 선택
 	@Override
 	public List<CartDTO> cartSelect(List<Integer> cartNo) {

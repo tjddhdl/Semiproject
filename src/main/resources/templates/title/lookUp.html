@@ -104,8 +104,10 @@
 									});
 									
 									buyBtn.addEventListener("click",()=>{
-										if(alert("바로 구매하시겠습니까?")){
-											dtoForm.setAttribute("action","/cart");
+										if(confirm("바로 구매하시겠습니까?")){
+											dtoForm.setAttribute("action","/order/buy");
+											dtoForm.setAttribute("method","post");
+											dtoForm.submit();
 										}
 									});
 								</script>

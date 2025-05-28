@@ -18,6 +18,6 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "delete from tbl_order_item where order_no = :orderNo", nativeQuery = true)
+	@Query(value = "DELETE FROM OrderItem oI WHERE oI.orderNo.orderNo = :orderNo")
 	void deleteAllByOrderNo(@Param("orderNo") int orderNo);
 }

@@ -142,7 +142,7 @@ public class OrderServiceImpl implements OrderService {
 			}
 
 			orderItemService.orderItemDelete(orderNo);
-			repository.deleteById(orderNo);
+			repository.deleteByOrderNo(orderNo);
 		}
 	}
 

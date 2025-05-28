@@ -28,8 +28,8 @@ public class OrderItemRepositoryTest {
 
 	@Test
 	void 오더아이템추가() {
-		Order order = repository2.findById(3).get();
-		Title title = repository3.findById(1).get();
+		Order order = repository2.findById(9).get();
+		Title title = repository3.findById(8).get();
 		OrderItem item = OrderItem.builder().orderNo(order).tNo(title).count(3).price(title.getPrice() * 3).build();
 
 		System.out.println("아이템: " + item);
@@ -65,7 +65,7 @@ public class OrderItemRepositoryTest {
 	void 오더no로삭제() {
 		Order order = new Order();
 		order.setOrderNo(8);
-		repository.deleteAllByOrderNo(1);
+		repository.deleteAllByOrderNo(9);
 
 	}
 
