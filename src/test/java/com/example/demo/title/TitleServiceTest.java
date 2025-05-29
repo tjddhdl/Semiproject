@@ -54,7 +54,7 @@ public class TitleServiceTest {
 
 	@Test
 	void 타이틀이름검색() {
-		List<TitleDTO> list = service.search("가");
+		List<TitleDTO> list = service.searchName("가");
 		for (TitleDTO dto : list) {
 			System.out.println("목록: " + dto);
 		}

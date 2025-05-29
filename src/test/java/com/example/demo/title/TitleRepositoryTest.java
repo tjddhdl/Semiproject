@@ -10,8 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.title.entity.Category;
 import com.example.demo.title.entity.ModelName;
+import com.example.demo.title.entity.QTitle;
 import com.example.demo.title.entity.Title;
 import com.example.demo.title.repository.TitleRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 @SpringBootTest
 public class TitleRepositoryTest {
@@ -57,5 +60,18 @@ public class TitleRepositoryTest {
 	@Test
 	void 타이틀삭제() {
 		repository.deleteById(5);
+	}
+
+	@Test
+	void 검색테스트() {
+		QTitle qTitle = QTitle.title;
+		BooleanBuilder builder = new BooleanBuilder();
+
+		BooleanExpression expression = qTitle.model.eq(ModelName.PS4);
+		builder.and(expression);
+		Iterable<Title> list = repository.findAll(builder);
+		for (Title title : list) {
+			System.out.println("테스트~: " + title);
+		}
 	}
 }

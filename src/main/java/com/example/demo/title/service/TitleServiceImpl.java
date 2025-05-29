@@ -1,8 +1,10 @@
 package com.example.demo.title.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +12,12 @@ import org.springframework.stereotype.Service;
 import com.example.demo.title.dto.TitleDTO;
 import com.example.demo.title.entity.Category;
 import com.example.demo.title.entity.ModelName;
+import com.example.demo.title.entity.QTitle;
 import com.example.demo.title.entity.Title;
 import com.example.demo.title.repository.TitleRepository;
 import com.example.demo.title.util.FileUtility;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 @Service
 public class TitleServiceImpl implements TitleService {
@@ -55,7 +60,7 @@ public class TitleServiceImpl implements TitleService {
 	@Override
 	public void modify(TitleDTO dto) {
 		Optional<Title> optional = repository.findById(dto.getTNo());
-		if(dto.getFile()!=null) {
+		if (dto.getFile() != null) {
 			dto.setImage(utility.fileUpload(dto.getFile()));
 		}
 		if (optional.isPresent()) {
@@ -89,7 +94,7 @@ public class TitleServiceImpl implements TitleService {
 
 	// 타이틀 이름으로 검색
 	@Override
-	public List<TitleDTO> search(String titleName) {
+	public List<TitleDTO> searchName(String titleName) {
 		List<Title> list = repository.findByTitleNameContaining(titleName);
 		List<TitleDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
 		return dtoList;
@@ -101,6 +106,53 @@ public class TitleServiceImpl implements TitleService {
 		List<Title> list = repository.findTitleByFilter(model, category, minAge, maxAge);
 		List<TitleDTO> dtoList = list.stream().map(entity -> entityToDTO(entity)).collect(Collectors.toList());
 		return dtoList;
+	}
+
+	// 타이틀 검색
+	@Override
+	public List<TitleDTO> search(String titleName, ModelName model, Category category, List<Integer> ageList,
+			List<String> priceList, List<LocalDate> dateList, Integer stock) {
+		QTitle qTitle = QTitle.title;
+		BooleanBuilder builder = new BooleanBuilder();
+		if (!titleName.trim().isEmpty()) {
+			BooleanExpression expression1 = qTitle.titleName.contains(titleName);
+			builder.and(expression1);
+		}
+		if (model != null) {
+			BooleanExpression expression2 = qTitle.model.eq(model);
+			builder.and(expression2);
+		}
+		if (category != null) {
+			BooleanExpression expression3 = qTitle.category.eq(category);
+			builder.and(expression3);
+		}
+		if (ageList != null) {
+			BooleanExpression expression4 = qTitle.ageRate.in(ageList);
+			builder.and(expression4);
+		}
+		if (priceList != null) {
+
+		}
+		// dateList는 3번에 걸쳐 나눠야함
+		if (dateList.get(0) != null && dateList.get(1) != null) {
+			BooleanExpression expression5 = qTitle.releaseDate.between(dateList.get(0), dateList.get(1));
+			builder.and(expression5);
+		} else if (dateList.get(0) != null && dateList.get(1) == null) {
+			BooleanExpression expression5 = qTitle.releaseDate.goe(dateList.get(0));
+			builder.and(expression5);
+		} else if (dateList.get(0) == null && dateList.get(1) != null) {
+			BooleanExpression expression5 = qTitle.releaseDate.loe(dateList.get(1));
+			builder.and(expression5);
+		}
+		if (stock != null) {
+			BooleanExpression expression6 = qTitle.stock.ne(stock);
+			builder.and(expression6);
+		}
+		Iterable<Title> iterable = repository.findAll(builder);
+		List<TitleDTO> list = StreamSupport.stream(iterable.spliterator(), false).map(Title -> entityToDTO(Title))
+				.collect(Collectors.toList());
+
+		return list;
 	}
 
 }

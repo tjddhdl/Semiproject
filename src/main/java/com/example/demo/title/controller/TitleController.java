@@ -1,5 +1,6 @@
 package com.example.demo.title.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.title.dto.TitleDTO;
 import com.example.demo.title.entity.Category;
 import com.example.demo.title.entity.ModelName;
+import com.example.demo.title.entity.QTitle;
 import com.example.demo.title.service.TitleService;
+import com.querydsl.core.BooleanBuilder;
 
 @Controller
 @RequestMapping("/title")
@@ -31,10 +35,35 @@ public class TitleController {
 	}
 
 	// 이름 검색
+//	@GetMapping("/search")
+//	public void search(@RequestParam(name = "titleName") String titleName, Model model) {
+//		List<TitleDTO> list = service.search(titleName);
+//		model.addAttribute("list", list);
+//	}
+
+	// 검색
 	@GetMapping("/search")
-	public void search(@RequestParam(name = "titleName") String titleName, Model model) {
-		List<TitleDTO> list = service.search(titleName);
-		model.addAttribute("list", list);
+	public void search(Model model) {
+		List<TitleDTO> list = service.main();
+		model.addAttribute("modelNames", ModelName.values());
+		model.addAttribute("categoryes", Category.values());
+	}
+
+	// 수정해야함
+	@PostMapping("/search")
+	@ResponseBody
+	public List<TitleDTO> searchPost(@RequestParam(name = "titleName", required = false) String titleName,
+			@RequestParam(name = "model", required = false) ModelName model,
+			@RequestParam(name = "category", required = false) Category category,
+			@RequestParam(name = "ageRating", required = false) List<Integer> ageList,
+			@RequestParam(name = "price", required = false) List<String> priceList,
+			@RequestParam(name = "date", required = false) List<LocalDate> dateList,
+			@RequestParam(name = "stock", required = false) Integer stock) {
+		List<TitleDTO> list = service.search(titleName, model, category, ageList, priceList, dateList, stock);
+		for (TitleDTO dto : list) {
+			System.out.println("야야" + dto);
+		}
+		return list;
 	}
 
 	// 타이틀 필터링 검색

@@ -1,5 +1,6 @@
 package com.example.demo.title.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.example.demo.title.dto.TitleDTO;
@@ -28,7 +29,7 @@ public interface TitleService {
 
 	// 전체조회
 	List<TitleDTO> main();
-	
+
 	// 게임정보조회
 	TitleDTO lookUp(int no);
 
@@ -39,8 +40,14 @@ public interface TitleService {
 	void delete(int id);
 
 	// 타이틀 이름으로 검색
-	List<TitleDTO> search(String titleName);
+	// 안씀
+	List<TitleDTO> searchName(String titleName);
 
 	// 타이틀 필터링 옵션
+	// 안씀
 	List<TitleDTO> filter(String model, String category, Integer minAge, Integer maxAge);
+
+	// 타이틀 검색
+	List<TitleDTO> search(String titleName, ModelName model, Category category, List<Integer> ageList,
+			List<String> priceList, List<LocalDate> dateList, Integer stock);
 }

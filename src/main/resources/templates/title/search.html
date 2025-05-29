@@ -1,10 +1,193 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h1 th:text="${list}"></h1>
-</body>
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+	<th:block th:fragment="content">
+		<div class="container header-text page-content"
+			style="margin-top: 0px">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1>검색 페이지</h1>
+					<div class="" style="margin-top: 10">
+
+						<!-- ***** Banner Start ***** -->
+						<div>
+							<div class="row">
+								<div class="col-lg-12"
+									style="background-color: #1F2122; border-radius: 30px; padding: 20px; color: white;">
+									<form id="searchForm">
+										<div style="display: flex;">
+											<label for="titleNameSearch">타이틀명</label> <input type="text"
+												id="titleNameSearch" name="titleName" class="form-control"
+												style="width: 50%; margin-left: 20px">
+										</div>
+										<div style="display: flex; gap: 40px;">
+											<div style="flex: 1;">
+												<table class="searchTable">
+													<tr>
+														<th>모델</th>
+														<td><input style="margin-left: 20px" type="radio"
+															name="model" value="" checked> 전체 <input
+															type="radio" th:each="model : ${modelNames}" name="model"
+															th:value="${model}" th:text=${model}>
+													</tr>
+													<tr>
+														<th>카테고리</th>
+														<td><button class="btn"
+																style="margin-left: 20px; background-color: #EC6090; color: white; border-radius: 100px"
+																type="button" onclick="toggleOptions()">카테고리 선택</button>
+															<span id="categoryText">전체</span> <input type="text"
+															name="category" id="category" value="" hidden></td>
+														<td><div id="optionDiv"
+																style="display: none; background-color: white; border-radius: 10px">
+																<button type="button" class="btn category"
+																	style="background-color: #EC5050; margin: 5px">전체</button>
+																<button type="button" class="btn category"
+																	style="background-color: #EC5050; margin: 5px"
+																	th:each="category : ${categoryes}" th:text=${category}></button>
+															</div></td>
+													</tr>
+													<tr>
+														<th>연령 등급</th>
+														<td>
+															<div style="margin-left: 20px">
+																<input type="checkbox" name="ageRating" th:text="전체이용가"
+																	value="0"><br> <input type="checkbox"
+																	name="ageRating" th:text="12세이용가" value="12"><br>
+																<input type="checkbox" name="ageRating" th:text="15세이용가"
+																	value="15"><br> <input type="checkbox"
+																	name="ageRating" th:text="청소년이용불가" value="19">
+															</div>
+														</td>
+													</tr>
+												</table>
+											</div>
+											<div style="flex: 1;">
+												<table class="searchTable">
+													<tr>
+														<th>가격</th>
+														<td>
+															<div style="margin-left: 20px">
+																<input type="checkbox" name="price" th:text="'4999원 이하'"
+																	value="'0-4999'"><br> <input
+																	type="checkbox" name="price" th:text="'5000-9999원'"
+																	value="'5000-9999'"><br> <input
+																	type="checkbox" name="price" th:text="'10000-19999원'"
+																	value="'10000-19999'"><br> <input
+																	type="checkbox" name="price" th:text="'20000-49999원'"
+																	value="'20000-49999'"><br> <input
+																	type="checkbox" name="price" th:text="'50000원 이상'"
+																	value="'50000-'">
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<th>출시일</th>
+														<td>
+															<div style="margin-left: 20px">
+																<input type="date" name="date"> - <input
+																	type="date" name="date">
+															</div>
+														</td>
+													</tr>
+													<tr>
+														<th>재고 유무</th>
+														<td><input type="checkbox" style="margin-left: 20px"
+															th:text="'재고 없는 상품 검색에서 제외'" value="0" name="stock"></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										<button type="button" id="showUp"
+											style="border-style: none; background: none"></button>
+									</form>
+								</div>
+								<button class="btn btn-lg" id="searchBtn" type="button"
+									style="background-color: #EC6090; border-radius: 100px">검색</button>
+							</div>
+						</div>
+						<!-- ***** Banner End ***** -->
+						<!-- ***** Most Popular Start ***** -->
+						<div class="most-popular">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="heading-section">
+										<h4>검색 결과</h4>
+									</div>
+									<div class="row" id="resultContainer"></div>
+								</div>
+							</div>
+						</div>
+						<!-- ***** Most Popular End ***** -->
+					</div>
+					<script type="text/javascript">
+							const box = document.getElementById("optionDiv");
+							const input = document.getElementById("category");
+							const span = document.getElementById("categoryText");
+							const searchTable = element.getElementsByClassName("searchTable");
+							const showUp = document.getElementById("showUp");
+							const searchBtn = document.getElementById("searchBtn");
+							const searchForm = document.getElementById("searchForm");
+							const resultContainer = document.getElementById("resultContainer");
+						function toggleOptions() {
+							box.style.display = 'block';
+						}
+						
+						document.querySelectorAll(".category").forEach(categoryBtn=>{
+							categoryBtn.addEventListener("click",()=>{
+								if(categoryBtn.textContent.trim()==="전체"){
+									span.textContent = categoryBtn.textContent;
+									input.value = "";
+									box.style.display = "none";
+									return;
+								}
+								span.textContent = categoryBtn.textContent;
+								input.value = categoryBtn.textContent;
+								box.style.display = 'none';
+							});
+						});
+						
+						searchBtn.addEventListener("click",()=>{
+							const formData = new FormData(searchForm);
+							const params = new URLSearchParams(formData);
+							fetch(`/title/search?${params.toString()}`,{
+								method: 'POST'
+							})
+							.then(res => res.json())
+							.then(list => {
+								console.log(list);
+								resultContainer.innerHTML = "";
+								if(list.length===0){
+									resultContainer.innerHTML = "<p>검색 결과가 없습니다</p>";
+									return;
+								}
+								list.forEach(dto => {
+									const div = document.createElement("div");
+									div.className = "col-lg-3 col-sm-6";
+									div.innerHTML = `
+										<a href="/title/lookUp?no=${dto.tNo}">
+											<div class="item">
+												<img src="/img/${dto.image}" alt="">
+												<h4>
+													${dto.titleName}<br>
+													<span>${dto.category}</span>
+												</h4>
+												<ul>
+													<li>${dto.model}</li>
+													<li><i class="fa fa-tag"></i>${dto.price}</li>
+												</ul>
+											</div>
+										</a>
+									`;
+									
+									resultContainer.appendChild(div);
+								});
+							});
+						});
+						
+					</script>
+				</div>
+			</div>
+		</div>
+
+	</th:block>
+</th:block>
 </html>
