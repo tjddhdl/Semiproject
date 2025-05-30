@@ -27,7 +27,9 @@
 														<button class="increaseBtn" type="button"
 															th:attr="data-cart-id=${dto.cart.cartNo}"
 															style="height: 20px; font-size: 10px; background-color: #666666; border: none; color: white; border-radius: 5px">></button>
-													</div> 총 [[${dto.cart.count}*${dto.cart.price}]]원
+													</div>
+													<p style="color: white;">총
+														[[${dto.cart.count}*${dto.cart.price}]]원</p>
 												</li>
 												<li><input type="checkbox" name="cartIds"
 													th:value="${dto.cart.cartNo}"></li>
@@ -76,11 +78,20 @@
 								decreaseBtns.forEach(btn =>{
 									btn.addEventListener("click",()=>{
 										const cartId = btn.getAttribute("data-cart-id");
+										const span = btn.parentElement.querySelector("span");
+										const p = btn.parentElement.parentElement.querySelector("p");
+										const current = parseInt(span.textContent);
+										const price = parseInt(p.textContent.replace(/[^\d]/g,""))/current;
+										
+										if(current===1){
+											alert("1 아래로 내려갈 수 없습니다");
+											return;
+										}
 										
 										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=-1`);
-										const span = btn.parentElement.querySelector("span");
-										let current = parseInt(span.textContent);
+										const newPrice = price*(current-1);
 										span.textContent = (current - 1)+"개";
+										p.textContent = `총 ${newPrice.toLocaleString()}원`;
 									})
 								});
 								
@@ -91,8 +102,12 @@
 										
 										fetch(`/cart/modify?cartId=${encodeURIComponent(cartId)}&count=1`);
 										const span = btn.parentElement.querySelector("span");
+										const p = btn.parentElement.parentElement.querySelector("p");
 										let current = parseInt(span.textContent);
+										const price = parseInt(p.textContent.replace(/[^\d]/g,""))/current;
+										const newPrice = price*(current+1);
 										span.textContent = (current + 1)+"개";
+										p.textContent = `총 ${newPrice.toLocaleString()}원`;
 									});
 								});
 							</script>
