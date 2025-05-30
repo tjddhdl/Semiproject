@@ -48,12 +48,6 @@
 							</script>
 						</div>
 						<div class="col-sm-12 mb-4">
-							<label for="password" class="form-label" style="color: white;">비밀번호</label>
-							<input type="password" class="form-control" id="password"
-								name="password" th:value="dto.getPassword" placeholder value
-								required>
-						</div>
-						<div class="col-sm-12 mb-4">
 							<label for="userName" class="form-label" style="color: white;">유저
 								이름</label> <input type="text" class="form-control" id="userName"
 								name="userName" th:value="${dto.getUserName}" placeholder value
@@ -66,7 +60,7 @@
 						<div class="col-sm-12 mb-4">
 							<label for="address" class="form-label" style="color: white;">주소</label>
 							<input type="text" class="form-control" id="address"
-								name="address">
+								name="address" th:value=${dto.address}>
 						</div>
 						<select name="role" hidden>
 							<option th:each="role : ${roles}" th:value=${role}

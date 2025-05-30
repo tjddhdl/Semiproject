@@ -56,7 +56,9 @@
 						</div>
 						<div class="col-sm-12 mb-4">
 							<label for="imgFile" class="form-label" style="color: white;">
-								이미지</label> <input type="file" class="form-control" id="imgFile"
+								이미지</label> 
+								<img alt="" th:src="@{'/img/'+${dto.image}}" style="width: 30%">
+								<input type="file" class="form-control" id="imgFile"
 								name="file">
 						</div>
 						<div class="col-sm-12 mb-4">

@@ -1,5 +1,6 @@
 package com.example.demo.member.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -27,13 +28,12 @@ public class MemberController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
-	
+
 	// 로그인페이지
 	@GetMapping("/login")
 	public void login() {
 	}
 
-	
 	// 회원가입 페이지
 	@GetMapping("/register")
 	public void register(Model model) {
@@ -52,12 +52,11 @@ public class MemberController {
 
 	// 로그인한 자신만 접근 가능하도록 처리해야함
 	// 회원정보조회
-	// 카트랑 주문목록도 볼 수 있도록 전반적으로 뒤집어야함
-	@GetMapping("/lookUp")
-	public void lookUp(@RequestParam(name = "no") int no, Model model) {
-		MemberDTO dto = service.lookUp(no);
-		model.addAttribute("dto", dto);
-	}
+//	@GetMapping("/lookUp")
+//	public void lookUp(Principal principal, Model model) {
+//		MemberDTO dto = service.lookUpId(principal.getName());
+//		model.addAttribute("dto", dto);
+//	}
 
 	// 관리자 권한일 때 가능하도록 처리해야 함
 	// 회원목록조회
@@ -69,8 +68,8 @@ public class MemberController {
 
 	// 회원정보수정(회원용)
 	@GetMapping("/modify")
-	public void modify(@RequestParam(name = "no") int no, Model model) {
-		MemberDTO dto = service.lookUp(no);
+	public void modify(Model model, Principal principal) {
+		MemberDTO dto = service.lookUpId(principal.getName());
 		model.addAttribute("dto", dto);
 		model.addAttribute("roles", Role.values());
 	}
@@ -83,9 +82,9 @@ public class MemberController {
 		MemberDTO dtoToApply = service.lookUp(dto.getMemberNo());
 		dto.setAge(dtoToApply.getAge());
 		dto.setRole(dtoToApply.getRole());
+		dto.setPassword(dtoToApply.getPassword());
 		service.modify(dto);
-		attributes.addAttribute("no", dto.getMemberNo());
-		return "redirect:/member/lookUp";
+		return "redirect:/title/main";
 	}
 
 	// 회원정보수정(관리자용)
@@ -98,6 +97,8 @@ public class MemberController {
 
 	@PostMapping("/modifyAdmin")
 	public String modifyAdminPost(MemberDTO dto) {
+		MemberDTO dtoToApply = service.lookUp(dto.getMemberNo());
+		dto.setPassword(dtoToApply.getPassword());
 		service.modify(dto);
 		return "redirect:/member/listLookUp";
 	}
@@ -105,7 +106,6 @@ public class MemberController {
 	// 회원삭제
 	@PostMapping("/delete")
 	public String delete(MemberDTO dto) {
-		System.out.println("뭐야뭐야뭐야"+dto);
 		service.delete(dto.getMemberNo());
 		return "redirect:/title/main";
 	}

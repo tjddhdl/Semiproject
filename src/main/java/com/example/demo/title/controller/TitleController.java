@@ -49,7 +49,6 @@ public class TitleController {
 		model.addAttribute("categoryes", Category.values());
 	}
 
-	// 수정해야함
 	@PostMapping("/search")
 	@ResponseBody
 	public List<TitleDTO> searchPost(@RequestParam(name = "titleName", required = false) String titleName,
@@ -60,9 +59,6 @@ public class TitleController {
 			@RequestParam(name = "date", required = false) List<LocalDate> dateList,
 			@RequestParam(name = "stock", required = false) Integer stock) {
 		List<TitleDTO> list = service.search(titleName, model, category, ageList, priceList, dateList, stock);
-		for (TitleDTO dto : list) {
-			System.out.println("야야" + dto);
-		}
 		return list;
 	}
 

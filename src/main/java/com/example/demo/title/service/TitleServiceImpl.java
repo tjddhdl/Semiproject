@@ -131,22 +131,34 @@ public class TitleServiceImpl implements TitleService {
 			builder.and(expression4);
 		}
 		if (priceList != null) {
-
+			for (String price : priceList) {
+				String[] range = price.replaceAll("'", "").split("-");
+				if (range[0].equals("50000")) {
+					int from = Integer.parseInt(range[0]);
+					BooleanExpression expression5 = qTitle.price.goe(from);
+					builder.and(expression5);
+				} else {
+					int from = Integer.parseInt(range[0]);
+					int to = Integer.parseInt(range[1]);
+					BooleanExpression expression5 = qTitle.price.between(from, to);
+					builder.and(expression5);
+				}
+			}
 		}
 		// dateList는 3번에 걸쳐 나눠야함
 		if (dateList.get(0) != null && dateList.get(1) != null) {
-			BooleanExpression expression5 = qTitle.releaseDate.between(dateList.get(0), dateList.get(1));
-			builder.and(expression5);
+			BooleanExpression expression6 = qTitle.releaseDate.between(dateList.get(0), dateList.get(1));
+			builder.and(expression6);
 		} else if (dateList.get(0) != null && dateList.get(1) == null) {
-			BooleanExpression expression5 = qTitle.releaseDate.goe(dateList.get(0));
-			builder.and(expression5);
+			BooleanExpression expression6 = qTitle.releaseDate.goe(dateList.get(0));
+			builder.and(expression6);
 		} else if (dateList.get(0) == null && dateList.get(1) != null) {
-			BooleanExpression expression5 = qTitle.releaseDate.loe(dateList.get(1));
-			builder.and(expression5);
+			BooleanExpression expression6 = qTitle.releaseDate.loe(dateList.get(1));
+			builder.and(expression6);
 		}
 		if (stock != null) {
-			BooleanExpression expression6 = qTitle.stock.ne(stock);
-			builder.and(expression6);
+			BooleanExpression expression7 = qTitle.stock.ne(stock);
+			builder.and(expression7);
 		}
 		Iterable<Title> iterable = repository.findAll(builder);
 		List<TitleDTO> list = StreamSupport.stream(iterable.spliterator(), false).map(Title -> entityToDTO(Title))

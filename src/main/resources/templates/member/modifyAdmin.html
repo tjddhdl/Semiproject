@@ -49,12 +49,6 @@
 							</script>
 							</div>
 							<div class="col-sm-12 mb-4">
-								<label for="password" class="form-label" style="color: white;">비밀번호</label>
-								<input type="text" class="form-control" id="password"
-									name="password" th:value="${dto.password}" placeholder value
-									required>
-							</div>
-							<div class="col-sm-12 mb-4">
 								<label for="userName" class="form-label" style="color: white;">유저
 									이름</label> <input type="text" class="form-control" id="userName"
 									name="userName" th:value="${dto.userName}" placeholder value
@@ -74,7 +68,7 @@
 								<label for="role" class="form-label" style="color: white;">권한</label>
 								<select class="form-control" id="role" name="role">
 									<option th:each="role : ${roles}" th:value=${role}
-										th:text="${role}">
+										th:text="${role}" th:selected="${dto.role} == ${role}">
 								</select>
 							</div>
 						</form>
