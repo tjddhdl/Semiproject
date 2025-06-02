@@ -1,6 +1,7 @@
 package com.example.demo.title.controller;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class TitleController {
 	@GetMapping("/main")
 	public void main(Model model) {
 		List<TitleDTO> list = service.main();
+		list.sort(Comparator.comparing(TitleDTO::getReleaseDate).reversed());
 		model.addAttribute("list", list);
 	}
 
