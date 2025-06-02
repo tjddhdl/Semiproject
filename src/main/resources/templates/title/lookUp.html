@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
 	<th:block th:fragment="content">
-		<div class="header-text"></div>
-		<div class="container">
-			<!-- 사진하고 설명 묶는 div -->
-			<div class="row">
-				<!-- 사진 div -->
-				<div class="col-lg-6">
-					<img alt="" th:src="@{'/img/'+${dto.image}}"
-						style="border-radius: 23px; object-fit: fill">
-				</div>
-				<!-- 설명 div -->
-				<div class="col-lg-6 game-details">
-					<div class="content">
-						<!-- 가로줄1 -->
-						<div class="left-info" style="display: flex;">
-							<div class="" style="width: 50%; text-align: left;">
-								<h3 th:text="${dto.titleName}"
-									style="margin: 0px; padding: 10px"></h3>
+		<div class="header-text">
+			<div class="container">
+				<!-- 사진하고 설명 묶는 div -->
+				<div class="row">
+					<!-- 사진 div -->
+					<div class="col-lg-6">
+						<img alt="" th:src="@{'/img/'+${dto.image}}"
+							style="border-radius: 23px; object-fit: fill">
+					</div>
+					<!-- 설명 div -->
+					<div class="col-lg-6 game-details">
+						<div class="content">
+							<!-- 가로줄1 -->
+							<div class="left-info" style="display: flex;">
+								<div class="" style="width: 50%; text-align: left;">
+									<h3 th:text="${dto.titleName}"
+										style="margin: 0px; padding: 10px"></h3>
+								</div>
+								<div class="" style="width: 50%; text-align: right;">
+									<h4 th:text="${dto.category}" style="margin-bottom: 10px;"></h4>
+									<h4 th:text="${dto.price}+원"></h4>
+								</div>
 							</div>
-							<div class="" style="width: 50%; text-align: right;">
-								<h4 th:text="${dto.category}" style="margin-bottom: 10px;"></h4>
-								<h4 th:text="${dto.price}+원"></h4>
+							<!-- 가로줄2 -->
+							<div class="right-info">
+								<ul
+									style="display: flex; justify-content: center; align-items: center; gap: 30px; padding: 0; margin: 0; list-style: none;">
+									<li
+										style="display: flex; flex-direction: column; align-items: center; font-size: 20px"><img
+										alt="" src="/assets/icons/playstation.svg" style="width: 30px">[[${dto.model}]]
+									</li>
+									<li
+										style="display: flex; flex-direction: column; align-items: center;">
+										<img alt="" src="/assets/icons/all.jpg" id="ageimg"
+										style="width: 50px; border-radius: 6px">
+									</li>
+									<li
+										style="display: flex; flex-direction: column; align-items: center; font-size: 15px"><img
+										alt="" src="/assets/icons/calendar.svg" style="width: 30px">[[${dto.releaseDate}]]</li>
+								</ul>
 							</div>
-						</div>
-						<!-- 가로줄2 -->
-						<div class="right-info">
-							<ul
-								style="display: flex; justify-content: center; align-items: center; gap: 30px; padding: 0; margin: 0; list-style: none;">
-								<li
-									style="display: flex; flex-direction: column; align-items: center; font-size: 20px"><img
-									alt="" src="/assets/icons/playstation.svg" style="width: 30px">[[${dto.model}]]
-								</li>
-								<li
-									style="display: flex; flex-direction: column; align-items: center;">
-									<img alt="" src="/assets/icons/all.jpg" id="ageimg"
-									style="width: 50px; border-radius: 6px">
-								</li>
-								<li
-									style="display: flex; flex-direction: column; align-items: center; font-size: 15px"><img
-									alt="" src="/assets/icons/calendar.svg" style="width: 30px">[[${dto.releaseDate}]]</li>
-							</ul>
-						</div>
-						<input type="number" th:value="${dto.ageRate}" id="ageRate" hidden
-							readonly>
-						<script type="text/javascript">
+							<input type="number" th:value="${dto.ageRate}" id="ageRate"
+								hidden readonly>
+							<script type="text/javascript">
 							const ageRate = document.getElementById("ageRate");
 							const img = document.getElementById("ageimg");
 
@@ -58,37 +58,38 @@
 								img.src = "/assets/icons/over18.jpg"
 							}
 						</script>
-						<!-- 가로줄 하나 더 -->
-						<div class="right-info">
-							<ul
-								style="display: flex; justify-content: center; align-items: center; gap: 30px; padding: 0; margin: 0; list-style: none;">
-								<li
-									style="display: flex; flex-direction: column; align-items: center;">
-									<span style="color: white; font-size: 20px">재고:
-										[[${dto.stock}]]</span>
-								</li>
-								<li
-									style="display: flex; flex-direction: column; align-items: center;">
-									<form id="dtoForm">
-										<input name="count" min="1" th:max="${dto.stock}" value="1"
-											type="number" class="form-control" style="width: 80px">
-										<input name="price" type="number" th:value="${dto.price}"
-											hidden readonly> <input name="tNo" type="number"
-											th:value="${dto.tNo}" hidden readonly>
-									</form>
-								</li>
-								<li
-									style="display: flex; flex-direction: column; align-items: center;">
-									<button class="btn btn-lg" id="cartBtn"
-										style="font-size: 15px; background-color: #EC6090; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">카트에
-										담기</button>
-									<button class="btn btn-lg" id="buyBtn"
-										style="font-size: 15px; background-color: #EC5050; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">바로구매</button>
-									<a sec:authorize="hasRole('ROLE_Admin')" th:href="@{/title/modify(no=${dto.tNo})}"><button
-											class="btn btn-lg" id="modifyBtn"
-											style="font-size: 15px; background-color: red; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">수정</button></a>
-								</li>
-								<script type="text/javascript">
+							<!-- 가로줄 하나 더 -->
+							<div class="right-info">
+								<ul
+									style="display: flex; justify-content: center; align-items: center; gap: 30px; padding: 0; margin: 0; list-style: none;">
+									<li
+										style="display: flex; flex-direction: column; align-items: center;">
+										<span style="color: white; font-size: 20px">재고:
+											[[${dto.stock}]]</span>
+									</li>
+									<li
+										style="display: flex; flex-direction: column; align-items: center;">
+										<form id="dtoForm">
+											<input name="count" min="1" th:max="${dto.stock}" value="1"
+												type="number" class="form-control" style="width: 80px">
+											<input name="price" type="number" th:value="${dto.price}"
+												hidden readonly> <input name="tNo" type="number"
+												th:value="${dto.tNo}" hidden readonly>
+										</form>
+									</li>
+									<li
+										style="display: flex; flex-direction: column; align-items: center;">
+										<button class="btn btn-lg" id="cartBtn"
+											style="font-size: 15px; background-color: #EC6090; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">카트에
+											담기</button>
+										<button class="btn btn-lg" id="buyBtn"
+											style="font-size: 15px; background-color: #EC5050; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">바로구매</button>
+										<a sec:authorize="hasRole('ROLE_Admin')"
+										th:href="@{/title/modify(no=${dto.tNo})}"><button
+												class="btn btn-lg" id="modifyBtn"
+												style="font-size: 15px; background-color: red; color: white; padding: 10px 0px; width: 100px; border-radius: 100px">수정</button></a>
+									</li>
+									<script type="text/javascript">
 									const cartBtn = document.getElementById("cartBtn");
 									const buyBtn = document.getElementById("buyBtn");
 									const dtoForm = document.getElementById("dtoForm");
@@ -114,7 +115,8 @@
 										}
 									});
 								</script>
-							</ul>
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>

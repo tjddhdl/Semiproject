@@ -53,4 +53,10 @@ public class OrderRepositoryTest {
 	void 오더삭제() {
 		repository.deleteById(5);
 	}
+	
+	@Test
+	void 모두가져오기() {
+		List<Order>list = repository.findAll();
+		System.out.println("목록"+list);
+	}
 }

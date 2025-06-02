@@ -63,4 +63,12 @@ public class OrderServiceTest {
 	void 오더취소() {
 		service.orderCancel(8);
 	}
+
+	@Test
+	void 목록전부() {
+		List<OrderDTO> list = service.findAll();
+		for (OrderDTO dto : list) {
+			System.out.println("목록: " + dto);
+		}
+	}
 }

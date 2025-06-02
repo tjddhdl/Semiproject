@@ -20,4 +20,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Modifying
 	@Query(value = "delete from Order or where or.orderNo = :orderNo")
 	void deleteByOrderNo(@Param("orderNo") int orderNo);
+	
+	List<Order> findAll();
 }

@@ -124,6 +124,13 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 	}
+	
+	// 주문 전부 조회(관리자)
+	public List<OrderDTO> findAll(){
+		List<Order> entityList = repository.findAll();
+		List<OrderDTO> list = entityList.stream().map(entity->entityToDTO(entity)).collect(Collectors.toList());
+		return list;
+	}
 
 	// 주문 취소(배송전일경우만)
 	@Override

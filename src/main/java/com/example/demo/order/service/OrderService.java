@@ -31,6 +31,9 @@ public interface OrderService {
 	// 특정회원 주문목록 조회
 	List<OrderDTO> orderSearch(int memberNo);
 
+	// 주문 모두조회
+	List<OrderDTO> findAll();
+	
 	// 주문 상세조회
 	OrderDTO orderLookUp(int orderNo);
 

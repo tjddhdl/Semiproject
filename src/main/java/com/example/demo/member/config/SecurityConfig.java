@@ -55,7 +55,8 @@ public class SecurityConfig {
 				.requestMatchers("/order/orderLookUp").hasAnyRole("Customer","Admin")
 				.requestMatchers("/order/orderDelete").hasAnyRole("Customer","Admin")
 				.requestMatchers("/order/orderCancel").hasAnyRole("Customer","Admin")
-				.requestMatchers("/order/modify").hasAnyRole("Admin"));
+				.requestMatchers("/order/modify").hasAnyRole("Admin")
+				.requestMatchers("/order/listLookUp").hasAnyRole("Admin"));
 
 		http.formLogin(form -> form.loginPage("/member/login").loginProcessingUrl("/login").usernameParameter("id")
 				.passwordParameter("password").defaultSuccessUrl("/title/main", true).permitAll());

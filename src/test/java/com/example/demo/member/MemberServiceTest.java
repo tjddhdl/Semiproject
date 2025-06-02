@@ -19,7 +19,7 @@ public class MemberServiceTest {
 
 	@Test
 	void 멤버가입() {
-		MemberDTO dto = MemberDTO.builder().id("aaaa").password("aaaa").userName("거북").age(LocalDate.of(2010, 3, 2))
+		MemberDTO dto = MemberDTO.builder().id("bbbb").password("bbbb").userName("bb").age(LocalDate.of(2010, 3, 2))
 				.role(Role.Customer).build();
 
 		service.register(dto);

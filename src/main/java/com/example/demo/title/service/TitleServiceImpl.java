@@ -31,7 +31,9 @@ public class TitleServiceImpl implements TitleService {
 	// 게임등록
 	@Override
 	public void register(TitleDTO dto) {
-		dto.setImage(utility.fileUpload(dto.getFile()));
+		if(dto.getFile()!=null) {
+			dto.setImage(utility.fileUpload(dto.getFile()));
+		}
 		Title title = dtoToEntity(dto);
 		repository.save(title);
 	}

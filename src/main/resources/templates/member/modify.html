@@ -60,7 +60,7 @@
 						<div class="col-sm-12 mb-4">
 							<label for="address" class="form-label" style="color: white;">주소</label>
 							<input type="text" class="form-control" id="address"
-								name="address" th:value=${dto.address}>
+								name="address" th:value="${dto.address}">
 						</div>
 						<select name="role" hidden>
 							<option th:each="role : ${roles}" th:value=${role}

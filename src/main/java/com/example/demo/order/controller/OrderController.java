@@ -159,20 +159,39 @@ public class OrderController {
 		return "redirect:/order/orderLookUp";
 	}
 
+	// 모든 주문 목록 조회
+	@GetMapping("/listLookUp")
+	public void listLookUp(Model model) {
+		List<OrderDTO> list = orderService.findAll();
+		model.addAttribute("list", list);
+	}
+
 	// 주문 정보 수정(관리자)
 	// 배송 관련 정보만 수정
 	@GetMapping("/modify")
 	public void orderModify(@RequestParam(name = "orderNo") int orderNo, Model model) {
 		OrderDTO dto = orderService.orderLookUp(orderNo);
 		dto.setOrderDate(dto.getOrderDate().truncatedTo(ChronoUnit.MINUTES));
+		List<OrderItemDTO> itemList = itemService.orderItemLookUp(orderNo);
+
+		List<OrderItemTitle> oTList = new ArrayList<>();
+
+		for (OrderItemDTO itemDTO : itemList) {
+			TitleDTO titleDTO = titleService.lookUp(itemDTO.getTNo());
+			System.out.println(titleDTO);
+			OrderItemTitle itemTitle = OrderItemTitle.builder().orderItemDTO(itemDTO).titleDTO(titleDTO).build();
+			System.out.println(itemTitle);
+			oTList.add(itemTitle);
+		}
+		System.out.println("ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄹ"+oTList);
 		model.addAttribute("dto", dto);
 		model.addAttribute("statuses", Status.values());
+		model.addAttribute("list", oTList);
 	}
 
 	// 주문 정보 수정 post
 	@PostMapping("/modify")
 	public String modifyPost(OrderDTO dto) {
-		System.out.println(dto);
 		OrderDTO orderDTO = orderService.orderLookUp(dto.getOrderNo());
 		orderDTO.setStatus(dto.getStatus());
 		orderDTO.setArrivedDate(dto.getArrivedDate());
